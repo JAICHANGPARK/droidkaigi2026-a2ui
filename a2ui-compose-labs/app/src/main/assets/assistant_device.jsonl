@@ -1,0 +1,4 @@
+{"version":"v1.0","createSurface":{"surfaceId":"__turn__","catalogId":"app.assistant.catalog/v1","components":[{"id":"root","component":"Card","children":["tiles","chart"]}],"dataModel":{"stats":[],"chart":{"labels":[],"values":[]}}}}
+{"version":"v1.0","updateDataModel":{"surfaceId":"__turn__","path":"/request","value":{"kind":"device"}}}
+{"version":"v1.0","updateComponents":{"surfaceId":"__turn__","components":[{"id":"tiles","component":"List","direction":"horizontal","children":{"componentId":"tile","path":"/stats"}},{"id":"tile","component":"StatTile","label":{"path":"label"},"value":{"path":"value"},"delta":{"path":"delta"}}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"__turn__","components":[{"id":"chart","component":"LineChart","title":"App CPU, last 30 seconds","labels":{"path":"/chart/labels"},"values":{"path":"/chart/values"}}]}}

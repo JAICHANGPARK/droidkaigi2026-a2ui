@@ -1,0 +1,28 @@
+# Kickoff prompt (paste into Claude Code, verbatim)
+
+```
+Read CLAUDE.md and spec-summary.md in this project root first. Then build, working ONLY in this project, with NO network access except your own API calls:
+
+1. Implement a minimal A2UI v1.0 renderer for Jetpack Compose in package `com.example.a2uilive.a2ui`:
+   - Parse JSONL messages: createSurface, updateComponents, updateDataModel, deleteSurface (exact shapes are in spec-summary.md)
+   - SurfaceState: components in mutableStateMapOf, data model in mutableStateOf<JsonElement> — every message application is a snapshot-state change
+   - JSON Pointer (RFC 6901) get/set for the data model; any component property may be a literal or {"path": "/..."}
+   - ComponentRegistry: Map<String, @Composable factory>. This is the allowlist: unknown component types are SKIPPED silently — never crash, never guess
+   - Material 3 components: Text, Column, Row, List, Card, Divider, Button, TextField, CheckBox, Slider. Use MaterialTheme for all styling
+   - Two-way binding for TextField/CheckBox/Slider: writes go to the local data model only
+   - Button "action" property → build the v1.0 renderer→agent action JSON (name, surfaceId, sourceComponentId, ISO-8601 timestamp, context with {"path"} references resolved) and pass it to an onAction callback
+   - A2uiSurface(state, registry, onAction): recursive render starting at id "root"; nodes not yet arrived render nothing (progressive rendering); cap depth at 24 and components at 200
+2. In MainActivity: replay app/src/main/assets/contact_form.jsonl line by line with a 400ms delay into the renderer (this simulates the agent streaming). Render the surface. Show any dispatched action as an AlertDialog containing the pretty-printed action JSON.
+3. Build with: JAVA_HOME=/opt/homebrew/opt/openjdk@21 ./gradlew assembleDebug --offline
+   Fix any compile errors and rebuild until green. Do NOT remove --offline; all dependencies are already cached.
+4. Install and launch on the running emulator (android run --apks app/build/outputs/apk/debug/app-debug.apk), then capture a screenshot.
+
+Acceptance criteria: the form appears piece by piece as lines are applied; typing in the Name field updates the data model; pressing Submit shows an action JSON that contains the typed name and email. Report the total wall-clock time when done.
+```
+
+## Notes
+
+- 프롬프트는 리허설에서 검증된 문구를 유지할 것 — 단어를 바꾸면 결과 변동성이 생긴다.
+- `com.example.a2uilive` 부분은 스캐폴드 생성 시 실제 패키지명으로 맞춰 수정.
+- 타이핑 시간을 없애려면 무대에서는 `claude "$(cat kickoff-prompt.txt)"` 한 줄로 실행하거나,
+  Claude Code 세션에 미리 붙여넣고 Enter만 남겨둔다.

@@ -1,0 +1,11 @@
+{"version":"v1.0","createSurface":{"surfaceId":"survey","catalogId":"app.survey.catalog/v1","components":[{"id":"root","component":"Card","children":["title","q1","q2","q3","q4","submit"]}],"dataModel":{"visitRating":0,"drinkRating":0,"comeBack":false,"comments":""}}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"title","component":"Text","text":"Café Satisfaction Survey"}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"q1","component":"Question","text":"How would you rate your overall visit today?","required":true,"children":["a1"]}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"a1","component":"StarRating","value":{"path":"/visitRating"},"max":5}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"q2","component":"Question","text":"How would you rate the quality of your drinks?","required":true,"children":["a2"]}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"a2","component":"StarRating","value":{"path":"/drinkRating"},"max":5}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"q3","component":"Question","text":"Would you visit us again?","required":false,"children":["a3"]}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"a3","component":"CheckBox","label":"Yes, I would come back","value":{"path":"/comeBack"}}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"q4","component":"Question","text":"Any suggestions for improvements?","required":false,"children":["a4"]}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"a4","component":"TextField","text":{"path":"/comments"},"label":"Your comments"}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"survey","components":[{"id":"submit","component":"Button","label":"Submit Feedback","action":{"name":"submitSurvey","context":{"visitRating":{"path":"/visitRating"},"drinkRating":{"path":"/drinkRating"},"comeBack":{"path":"/comeBack"},"comments":{"path":"/comments"}}}}]}}

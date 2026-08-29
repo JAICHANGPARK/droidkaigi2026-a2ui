@@ -1,0 +1,2 @@
+{"version":"v1.0","updateComponents":{"surfaceId":"__turn__","components":[{"id":"root","component":"Card","children":["closed"]},{"id":"closed","component":"Column","children":["c_title","c_note"]}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"__turn__","components":[{"id":"c_title","component":"Text","text":{"call":"formatString","args":{"value":"Ticket ${/waitlist/ticket} · ${/waitlist/outcome}"}}},{"id":"c_note","component":"Text","text":{"path":"/waitlist/outcomeNote"}}]}}

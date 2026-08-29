@@ -1,0 +1,4 @@
+{"version":"v1.0","createSurface":{"surfaceId":"__turn__","catalogId":"app.assistant.catalog/v1","components":[{"id":"root","component":"PlaylistCard","title":"__query__","children":["list","save"]}],"dataModel":{"tracks":[]}}}
+{"version":"v1.0","updateDataModel":{"surfaceId":"__turn__","path":"/request","value":{"kind":"tracks","query":"__query__"}}}
+{"version":"v1.0","updateComponents":{"surfaceId":"__turn__","components":[{"id":"list","component":"List","direction":"vertical","children":{"componentId":"song_row","path":"/tracks"}},{"id":"song_row","component":"SongRow","title":{"path":"title"},"artist":{"path":"artist"},"artworkUrl":{"path":"artwork"},"previewUrl":{"path":"preview"},"selected":{"path":"selected"}}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"__turn__","components":[{"id":"save","component":"Button","label":"Save playlist","action":{"name":"savePlaylist","context":{"tracks":{"path":"/tracks"}}}}]}}

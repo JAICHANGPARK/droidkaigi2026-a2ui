@@ -1,0 +1,2 @@
+{"version":"v1.0","updateComponents":{"surfaceId":"__turn__","components":[{"id":"root","component":"Card","children":["ty"]},{"id":"ty","component":"Column","children":["ty_title","ty_line"]}]}}
+{"version":"v1.0","updateComponents":{"surfaceId":"__turn__","components":[{"id":"ty_title","component":"Text","text":{"call":"formatString","args":{"value":"Thanks · ${/review/food} stars for the food"}}},{"id":"ty_line","component":"Text","text":{"call":"formatString","args":{"value":"${/tracking/rider} got ${/review/rider} stars. Order ${/order/code} is closed."}}}]}}

@@ -1,0 +1,24 @@
+droidkaigi2026-a2ui
+Copyright 2026 Park Jai-Chang (@jaichangpark)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------------------------
+This product includes verbatim, unmodified source from the Android Open Source
+Project:
+
+  androidx-a2ui-source/            androidx-main:a2ui/
+  androidx-material3-a2ui-source/  androidx-main:compose/material3/material3-a2ui/
+
+  Copyright 2025-2026 The Android Open Source Project
+  Licensed under the Apache License, Version 2.0
+
+The snapshot is pinned by commit and git tree hash in each folder's
+SOURCE_COMMIT.txt. Upstream:
+  https://android.googlesource.com/platform/frameworks/support/+/androidx-main/a2ui/
+  https://github.com/androidx/androidx/tree/androidx-main/a2ui
+------------------------------------------------------------------------------
