@@ -25,8 +25,8 @@ import androidx.compose.runtime.setValue
 // text, and material3-a2ui still has no TextField. So it lives here rather than in either
 // screen's file, and neither screen owns it.
 //
-// It implements androidx.a2ui.compose.ui.A2uiComponent, the same interface
-// MaterialCheckBoxComponent implements. Nothing here reaches around the library.
+// It implements androidx.a2ui.compose.ui.A2uiComponent, the same interface every component in
+// A2uiBasicCatalogV1 ultimately implements. Nothing here reaches around the library.
 
 /**
  * A single-line text input.

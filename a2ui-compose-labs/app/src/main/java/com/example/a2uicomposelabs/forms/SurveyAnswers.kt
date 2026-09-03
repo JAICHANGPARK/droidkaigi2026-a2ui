@@ -1,7 +1,7 @@
 package com.example.a2uicomposelabs.forms
 
-import com.example.a2uicomposelabs.a2ui.ComponentNode
-import com.example.a2uicomposelabs.a2ui.SurfaceState
+import com.example.a2uicomposelabs.a2ui.model.ComponentNode
+import com.example.a2uicomposelabs.a2ui.runtime.SurfaceState
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject

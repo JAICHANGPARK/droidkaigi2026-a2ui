@@ -32,6 +32,12 @@ import androidx.a2ui.model.catalog.functions.A2uiUrlOpener
  * @param image [A2uiBasicCatalogV1.Image] component implementation. Use
  *   [MaterialA2uiBasicCatalogV1Defaults.image] to create a default Material 3 implementation with
  *   an [A2uiImageRenderer]
+ * @param video [A2uiBasicCatalogV1.Video] component implementation. Use
+ *   [MaterialA2uiBasicCatalogV1Defaults.video] to create a default Material 3 implementation with
+ *   an [A2uiVideoRenderer]
+ * @param audioPlayer [A2uiBasicCatalogV1.AudioPlayer] component implementation. Use
+ *   [MaterialA2uiBasicCatalogV1Defaults.audioPlayer] to create a default Material 3 implementation
+ *   with an [A2uiAudioPlayerRenderer]
  * @param urlOpener [A2uiUrlOpener] used by catalog functions to open URLs
  * @param messageFormatter [A2uiMessageFormatter] used by catalog functions to format localized
  *   messages with arguments
@@ -51,14 +57,22 @@ import androidx.a2ui.model.catalog.functions.A2uiUrlOpener
  *   [MaterialA2uiBasicCatalogV1Defaults.list]
  * @param tabs [A2uiBasicCatalogV1.Tabs] component implementation, defaults to
  *   [MaterialA2uiBasicCatalogV1Defaults.tabs]
+ * @param divider [A2uiBasicCatalogV1.Divider] component implementation, defaults to
+ *   [MaterialA2uiBasicCatalogV1Defaults.divider]
  * @param button [A2uiBasicCatalogV1.Button] component implementation, defaults to
  *   [MaterialA2uiBasicCatalogV1Defaults.button]
+ * @param checkBox [A2uiBasicCatalogV1.CheckBox] component implementation, defaults to
+ *   [MaterialA2uiBasicCatalogV1Defaults.checkBox]
+ * @param slider [A2uiBasicCatalogV1.Slider] component implementation, defaults to
+ *   [MaterialA2uiBasicCatalogV1Defaults.slider]
  * @param dateTimeInput [A2uiBasicCatalogV1.DateTimeInput] component implementation, defaults to
  *   [MaterialA2uiBasicCatalogV1Defaults.dateTimeInput]
  * @return an [A2uiCatalog] configured with Material 3 basic components and functions
  */
 public fun materialA2uiBasicCatalogV1(
     image: A2uiBasicCatalogV1.Image,
+    video: A2uiBasicCatalogV1.Video,
+    audioPlayer: A2uiBasicCatalogV1.AudioPlayer,
     urlOpener: A2uiUrlOpener,
     messageFormatter: A2uiMessageFormatter,
     localeProvider: A2uiLocaleProvider,
@@ -69,7 +83,10 @@ public fun materialA2uiBasicCatalogV1(
     column: A2uiBasicCatalogV1.Column = MaterialA2uiBasicCatalogV1Defaults.column,
     list: A2uiBasicCatalogV1.List = MaterialA2uiBasicCatalogV1Defaults.list,
     tabs: A2uiBasicCatalogV1.Tabs = MaterialA2uiBasicCatalogV1Defaults.tabs,
+    divider: A2uiBasicCatalogV1.Divider = MaterialA2uiBasicCatalogV1Defaults.divider,
     button: A2uiBasicCatalogV1.Button = MaterialA2uiBasicCatalogV1Defaults.button,
+    checkBox: A2uiBasicCatalogV1.CheckBox = MaterialA2uiBasicCatalogV1Defaults.checkBox,
+    slider: A2uiBasicCatalogV1.Slider = MaterialA2uiBasicCatalogV1Defaults.slider,
     dateTimeInput: A2uiBasicCatalogV1.DateTimeInput =
         MaterialA2uiBasicCatalogV1Defaults.dateTimeInput,
     // TODO(b/547851648): Add the rest of the basic catalog component types.
@@ -79,12 +96,17 @@ public fun materialA2uiBasicCatalogV1(
             text = text,
             image = image,
             icon = icon,
+            video = video,
+            audioPlayer = audioPlayer,
             card = card,
             row = row,
             column = column,
             list = list,
             tabs = tabs,
+            divider = divider,
             button = button,
+            checkBox = checkBox,
+            slider = slider,
             dateTimeInput = dateTimeInput,
             // TODO(b/547851648): Add the rest of the basic catalog component types.
             functions = createBasicCatalogFunctions(urlOpener, messageFormatter, localeProvider),
@@ -105,6 +127,26 @@ public object MaterialA2uiBasicCatalogV1Defaults {
     public fun image(imageRenderer: A2uiImageRenderer): A2uiBasicCatalogV1.Image =
         MaterialA2uiBasicCatalogV1Image(imageRenderer)
 
+    /**
+     * Creates a default Material 3 implementation of the [A2uiBasicCatalogV1.Video] component.
+     *
+     * @param videoRenderer [A2uiVideoRenderer] used to render videos
+     * @return an [A2uiBasicCatalogV1.Video] instance
+     */
+    public fun video(videoRenderer: A2uiVideoRenderer): A2uiBasicCatalogV1.Video =
+        MaterialA2uiBasicCatalogV1Video(videoRenderer)
+
+    /**
+     * Creates a default Material 3 implementation of the [A2uiBasicCatalogV1.AudioPlayer]
+     * component.
+     *
+     * @param audioPlayerRenderer [A2uiAudioPlayerRenderer] used to render audio players
+     * @return an [A2uiBasicCatalogV1.AudioPlayer] instance
+     */
+    public fun audioPlayer(
+        audioPlayerRenderer: A2uiAudioPlayerRenderer
+    ): A2uiBasicCatalogV1.AudioPlayer = MaterialA2uiBasicCatalogV1AudioPlayer(audioPlayerRenderer)
+
     /** Default Material 3 implementation of the [A2uiBasicCatalogV1.Icon] component. */
     public val icon: A2uiBasicCatalogV1.Icon = MaterialA2uiBasicCatalogV1Icon
 
@@ -123,8 +165,17 @@ public object MaterialA2uiBasicCatalogV1Defaults {
     /** Default Material 3 implementation of the [A2uiBasicCatalogV1.Tabs] component. */
     public val tabs: A2uiBasicCatalogV1.Tabs = MaterialA2uiBasicCatalogV1Tabs
 
+    /** Default Material 3 implementation of the [A2uiBasicCatalogV1.Divider] component. */
+    public val divider: A2uiBasicCatalogV1.Divider = MaterialA2uiBasicCatalogV1Divider
+
     /** Default Material 3 implementation of the [A2uiBasicCatalogV1.Button] component. */
     public val button: A2uiBasicCatalogV1.Button = MaterialA2uiBasicCatalogV1Button
+
+    /** Default Material 3 implementation of the [A2uiBasicCatalogV1.CheckBox] component. */
+    public val checkBox: A2uiBasicCatalogV1.CheckBox = MaterialA2uiBasicCatalogV1CheckBox
+
+    /** Default Material 3 implementation of the [A2uiBasicCatalogV1.Slider] component. */
+    public val slider: A2uiBasicCatalogV1.Slider = MaterialA2uiBasicCatalogV1Slider
 
     /** Default Material 3 implementation of the [A2uiBasicCatalogV1.DateTimeInput] component. */
     public val dateTimeInput: A2uiBasicCatalogV1.DateTimeInput =

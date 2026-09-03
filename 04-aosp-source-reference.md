@@ -1,6 +1,7 @@
 # androidx.a2ui 소스 레퍼런스 — 폴더별·파일별 정리
 
-AOSP `androidx-main` 커밋 **`2834c08`** (2026-08-29) 기준 — 이 글을 쓰는 시점의 최신입니다.
+AOSP `androidx-main` 커밋 **`ac85854`** (2026-09-02) 기준 — 이 글을 쓰는 시점의 최신입니다.
+(`54bad67`(09-01) 이후 커밋 8개로 두 트리에서 파일 53개가 바뀌었습니다. **`Video`와 `AudioPlayer`가 계약에 새로 합류**(`d533dcf`·`32ed0cd`)해 컴포넌트 인터페이스가 **열셋에서 열다섯**이 됐고, 이 둘은 `Image`처럼 **앱이 렌더러를 주입하는 형태**라 `materialA2uiBasicCatalogV1()`의 **필수 파라미터가 넷에서 여섯으로 늘었습니다 — 기존 호출부가 전부 깨집니다.** 자식 weight도 들어왔습니다(`9fc04da`가 `WeightProperty`를, `c8e76a4`·`55652b0`이 Row/Column 구현을) — 어제까지 남아 있던 `TODO(b/547495694)`·`TODO(b/547501861)`이 **하루 만에 사라졌습니다.** 스키마 쪽은 `format`·`if-then` 키워드가 생겼고(`9631b36`), 마지막으로 `7ac433e`가 **전체 코드를 ktfmt 0.64로 재포맷**해 순수 서식 변경이 diff 곳곳에 섞여 있습니다.)
 로컬 사본: [`androidx-a2ui-source/`](androidx-a2ui-source/) · [`androidx-material3-a2ui-source/`](androidx-material3-a2ui-source/).
 두 사본 모두 GitHub 미러(`androidx/androidx`)에서 sparse checkout으로 받았고, git tree 해시를 각 폴더의 `SOURCE_COMMIT.txt`에 적어 두었습니다.
 
@@ -8,6 +9,21 @@ AOSP `androidx-main` 커밋 **`2834c08`** (2026-08-29) 기준 — 이 글을 쓰
 >
 > | 언제(UTC) | 무엇이 |
 > |---|---|
+> | 09-02 21:50 | `7ac433e` **전체 코드를 ktfmt 0.64로 재포맷.** 동작 변화 0. 이 커밋 이후의 diff를 읽을 때는 서식 변경과 실제 변경을 분리해야 합니다 — 이 저장소의 Slider 핀도 같은 재포맷을 따라갔습니다 |
+> | 09-02 18:25 | `d533dcf` **`Video`가 계약에 합류.** `A2uiBasicCatalogV1.Video`(프로퍼티는 `url` 하나)와 `catalog/MaterialA2uiBasicCatalogV1Video.kt`(64줄) 신설. **`Image`와 같은 렌더러 주입 방식** — `A2uiVideoRenderer` fun interface를 앱이 구현해 넘기고(Media3/ExoPlayer 등), 실패는 `onError` → `reportError`로 돌아옵니다. material3-a2ui 자체는 미디어 라이브러리에 의존하지 않습니다 |
+> | 09-02 16:58 | `32ed0cd` **`AudioPlayer`가 계약에 합류.** `A2uiBasicCatalogV1.AudioPlayer` + `catalog/MaterialA2uiBasicCatalogV1AudioPlayer.kt`(78줄). `Video`와 같은 구조(`A2uiAudioPlayerRenderer` 주입) |
+> | 09-02 13:43 | `c8e76a4`·`55652b0` **Row·Column 자식 weight 지원.** 어제 남겨졌던 `TODO(b/547495694)`(Row)·`TODO(b/547501861)`(Column)이 **하루 만에 닫혔습니다.** 이제 두 컨테이너의 TODO가 하나도 없습니다 |
+> | 09-02 13:08 | `9fc04da` **`WeightProperty`가 계약 컴포넌트들에 추가.** `Text`·`Icon`·`Image`·`Video` 등 자식이 될 수 있는 컴포넌트가 공통으로 `weight`를 갖습니다 — 부모 Row/Column이 읽어 `Modifier.weight()`로 매핑 |
+> | 09-02 10:37 | `9631b36` **스키마에 `format`·`if-then` 키워드 지원.** `A2uiSchemaKeyword.Format`과 `A2uiSchemaKeyword.IfThen` 신설, `A2uiCoreSchemaValidator`가 64줄 늘며 검증까지. `DateTimeInput`이 첫 사용처입니다 |
+> | 08-30 14:18 | `524f473` **레거시 `BasicTextField` deprecate 대응.** `MaterialTextFieldComponent`에 두 줄 |
+> | 09-01 22:45 | `6198d65` **`Slider`가 계약에 합류.** `A2uiBasicCatalogV1.Slider` 인터페이스(116줄)가 생기고 `MaterialSliderComponent.kt`(177줄)가 `catalog/MaterialA2uiBasicCatalogV1Slider.kt`(116줄, internal)로 이사했습니다. `min > max`면 그리지 않고 `reportError`하는 방어는 그대로 남았고(`TODO(b/549060875)` — 로딩 상태로 되돌릴지 에러를 띄울지 미정), `steps`·`coerceIn`·눈금 숨김(`drawTick = no-op`)도 유지됩니다. Robolectric 89줄 + androidTest 659줄 신설 |
+> | 09-01 22:04 | `f415ef1` **`CheckBox`가 계약에 합류.** `MaterialCheckBoxComponent.kt`(116줄) 삭제 → `catalog/MaterialA2uiBasicCatalogV1CheckBox.kt`(74줄). 계약 쪽에 92줄이 들어갔습니다 — **입력 컴포넌트가 계약에 들어간 첫 사례**. Robolectric 73줄 + androidTest 672줄(이번 묶음에서 가장 큰 테스트) 신설 |
+> | 09-01 17:46 | `77c3564` **`Divider`가 계약에 합류.** `MaterialDividerComponent.kt`(59줄) 삭제 → `catalog/MaterialA2uiBasicCatalogV1Divider.kt`(39줄). 세 이사 중 첫 번째이고, `MaterialA2uiBasicCatalogV1Defaults.divider`가 함께 생겼습니다 |
+> | 09-01 16:29 | `bcfdc1c` **[Row] `justify = stretch` 지원.** `Stretch`일 때 자식에 `Modifier.weight(1f)`를 걸어 남는 가로 공간을 균등 분배합니다 — 09-01 12:38 시점에 `Start`와 동일하게 처리되던 값이 이제 실제 의미를 갖습니다. `spaceAround`·`spaceEvenly`·`stretch` androidTest 189줄 추가 |
+> | 09-01 16:29 | `9975123` **[Column] `justify`/`align` 실제 구현.** Row와 대칭입니다 — `justify`는 `Arrangement.spacedBy(8.dp, Alignment.Top/CenterVertically/Bottom)` 및 `SpaceBetween`/`SpaceAround`/`SpaceEvenly`로, `align`은 `Alignment.Start`/`CenterHorizontally`/`End`로. `align = Stretch`는 Column에 `fillMaxWidth()`·자식에 `fillMaxWidth()`, `justify = Stretch`는 자식에 `weight(1f)`. androidTest 616줄 신설. `TODO(b/546052129)`가 사라지고 대신 자식별 weight를 다루는 `TODO(b/547501861)`(Row는 `b/547495694`)이 남았습니다 |
+> | 09-01 12:38 | `b29c38a` **[Row] `justify`/`align` 실제 구현.** `MaterialA2uiBasicCatalogV1Row`의 `TODO(b/546052129)`가 사라지고 두 스키마 프로퍼티가 Compose로 매핑됩니다 — `justify`는 `Arrangement.spacedBy(8.dp, Alignment.Start/CenterHorizontally/End)` 및 `SpaceAround`/`SpaceBetween`/`SpaceEvenly`로(`Stretch`는 지금 `Start`와 동일), `align`은 `Alignment.Top`/`CenterVertically`/`Bottom`으로. `align = Stretch`만 특수 처리 — Row에 `height(IntrinsicSize.Min)`, 자식에 `fillMaxHeight()`를 걸어 세로로 늘립니다. `RowChildItem`이 오브젝트 안 private 함수로 들어가고 `observeA2uiComponentState` 호출이 호출부로 올라갔습니다. androidTest 441줄 신설(`justify_*` 4개 + `align_*` 4개). 이때는 `Column`이 아직 그대로였지만, 09-01 16:29의 `9975123`이 곧바로 따라잡았습니다 |
+> | 08-31 23:18 | `39d77d7` **Robolectric 설정을 `enableRobolectric()`으로 일원화.** `compose/compose-runtime/build.gradle`에서 `testImplementation(libs.robolectric)` 한 줄이 빠졌습니다(같은 파일 64번째 줄의 `enableRobolectric()`이 이미 의존성과 JVM 플래그를 다 걸어 줍니다) |
+> | 08-31 23:14 | `743f30b` **build.gradle에서 `minSdk 24` 선언 제거** — AOSP 기본값과 같아서 명시할 필요가 없다는 이유입니다. `a2ui-engine`·`a2ui-model`·`compose-runtime`·`compose-ui`·`integration-tests/testapp` 5개 파일. **최소 SDK가 올라간 게 아니라 선언만 사라진 것** |
 > | 08-28 13:41 | `ff3409a` **[번역] `DateTimeInput` 문자열 4개(`button_cancel`·`button_ok`·`select_date`·`select_time`)가 번역 파이프라인에 등록.** 84개 로케일 파일이 갱신됐지만 **실제 번역은 아직 하나도 없습니다** — `en-rCA`만 영어 원문이 채워졌고 나머지 83개는 `<!-- no translation found --><skip />` 뿐이라, 지금 `DateTimeInput` 다이얼로그는 모든 언어에서 영어로 뜹니다. `a2ui/` 트리는 이 커밋에서 한 글자도 안 바뀌었습니다 |
 > | 08-27 21:18 | `0beddaf` **`Tabs`가 계약에 합류.** `MaterialTabsComponent`가 삭제되고 `catalog/MaterialA2uiBasicCatalogV1Tabs.kt`(internal)로 이사 |
 > | 08-27 19:06 | `dc42691` **`List`가 계약에 합류.** `MaterialListComponent` 삭제 → `catalog/MaterialA2uiBasicCatalogV1List.kt` |
@@ -449,15 +465,15 @@ List(dataList.size) { index -> A2uiComponentReference(componentId, "$path$separa
 
 ## 4. `compose/compose-ui/` — 컴포넌트 계약
 
-**5파일, 736줄.** "컴포넌트란 무엇인가"와 "카탈로그란 무엇인가"의 정의 전부입니다.
+**5파일, 2,596줄.** "컴포넌트란 무엇인가"와 "카탈로그란 무엇인가"의 정의 전부입니다. 08-21 기준 736줄이었으니 **열이틀 만에 세 배 반으로 불었고**, 늘어난 분량은 사실상 전부 `A2uiBasicCatalogV1.kt` 하나입니다.
 
 | 파일 | 무엇인가 |
 |---|---|
 | `A2uiComponent.kt` (133줄) | `A2uiComponent` 인터페이스 + 재귀 라우터 composable |
-| `A2uiCatalog.kt` (185줄) | `A2uiCatalog` 인터페이스 + 팩토리 함수 + `asReadinessEvaluator()` |
+| `A2uiCatalog.kt` (236줄) | `A2uiCatalog` 인터페이스 + 팩토리 함수 + `asReadinessEvaluator()` |
 | `A2uiComponentCollection.kt` (109줄) | 이름 색인 컴포넌트 컬렉션 |
 | `A2uiMessageProcessor.kt` (51줄) | Compose용 프로세서 팩토리 |
-| `catalog/A2uiBasicCatalogV1.kt` (258줄) | **08-19 신설.** 기본 카탈로그 API 계약. 08-21 `Card` 합류로 50줄 늘었습니다 |
+| `catalog/A2uiBasicCatalogV1.kt` (2,067줄) | **08-19 신설.** 기본 카탈로그 API 계약. 08-21 `Card`(258줄) 이후 컴포넌트가 하나씩 합류할 때마다 커졌고, 09-01 `Divider`·`CheckBox`·`Slider`, 09-02 `Video`·`AudioPlayer`로 **컴포넌트 인터페이스가 열다섯**이 됐습니다. 09-02에는 자식이 될 수 있는 컴포넌트들에 공통 `WeightProperty`도 들어왔습니다 |
 
 ```kotlin
 @Stable
@@ -600,43 +616,47 @@ public interface A2uiTestController {
 
 ---
 
-## 7. `compose/material3/material3-a2ui/` — 실제 컴포넌트 (18개 중 14개)
+## 7. `compose/material3/material3-a2ui/` — 실제 컴포넌트 (18개 중 16개)
 
 `a2ui/` **밖에**, Material 3 트리 안에 있습니다. 의존 방향 때문입니다 — `compose-ui`가 Material 3에 의존하면 안 되는데 M3 카탈로그는 양쪽에 의존하므로, M3 쪽에 둘 수밖에 없습니다.
 
 - group `androidx.compose.material3`, `mavenVersion = LibraryVersions.COMPOSE_MATERIAL3_A2UI_QUARANTINE` → **quarantine, 미출시**
 - `type = PUBLISHED_LIBRARY_ONLY_USED_BY_KOTLIN_CONSUMERS`
-- 2026-08-04 시작, main 17파일 2,426줄 + `icons/` 벡터 아이콘 60개(8,154줄 중 5,728줄) — 파일 수보다 **내용이 `catalog/` 아래로 이사하는 속도**가 이 모듈의 성격입니다
+- 2026-08-04 시작, main 19파일 2,607줄 + `icons/` 벡터 아이콘 60개(8,154줄 중 5,728줄) — 파일 수보다 **내용이 `catalog/` 아래로 이사하는 속도**가 이 모듈의 성격입니다. 09-01 하루에 standalone 셋이 한꺼번에 `catalog/`로 넘어가면서 파일 수는 17로 그대로인데 줄 수는 오히려 줄었고(2,468 → 2,425), 09-02에 `Video`·`AudioPlayer`가 새로 붙어 19파일 2,607줄이 됐습니다
 
 | 파일 | 상태 | 무엇인가 |
 |---|---|---|
 | `A2uiSurface.kt` (216줄) | 08-14 | M3 스타일 서피스 진입점 + `A2uiSurfaceDefaults` |
 | `MaterialA2uiDefaults.kt` (105줄) | 08-17 | 컴포넌트들이 공유하는 `transitionSpec` 등 M3 기본값 |
-| `MaterialDividerComponent.kt` (59줄) | 08-17 | `"Divider"` — 프로퍼티가 전부 `StaticA2uiProperty`인 유일한 컴포넌트 |
-| `MaterialCheckBoxComponent.kt` (116줄) | 08-18 | `"CheckBox"` — **첫 입력 컴포넌트** |
-| `MaterialSliderComponent.kt` (177줄) | 08-19 | `"Slider"` — `min > max`면 그리지 않고 `reportError` |
-| `MaterialTextFieldComponent.kt` (220줄) | 08-25 | `"TextField"` |
+| `MaterialTextFieldComponent.kt` (220줄) | 08-25 | `"TextField"` — **09-01 이후 유일하게 남은 standalone public object** |
 | `icons/` (60파일) | 08-24 | `A2uiIcon` + 벡터 아이콘 59개 — `Icon` 컴포넌트가 이름으로 찾아 씁니다 |
-| `catalog/MaterialA2uiBasicCatalogV1.kt` (134줄) | 08-19 | `materialA2uiBasicCatalogV1()` 팩토리 + `MaterialA2uiBasicCatalogV1Defaults` |
+| `catalog/MaterialA2uiBasicCatalogV1.kt` (185줄) | 08-19 | `materialA2uiBasicCatalogV1()` 팩토리 + `MaterialA2uiBasicCatalogV1Defaults`. 09-01 `divider`·`checkBox`·`slider`가, 09-02 `video`·`audioPlayer`가 늘었습니다 — 뒤의 둘은 **기본값이 없는 필수 파라미터** |
 | `catalog/…Text.kt` (82줄) | 08-19 | `"Text"` (**마크다운 처리 아직 없음**) |
 | `catalog/…Card.kt` (76줄) | 08-21 | `"Card"` — 자식 하나를 M3 `Card`로 감싸고 로딩/에러를 `AnimatedContent`로 전환 |
-| `catalog/…Row.kt` (92줄) / `…Column.kt` (91줄) | 08-24 | `"Row"` / `"Column"` |
+| `catalog/…Row.kt` (150줄) / `…Column.kt` (148줄) | 08-24 (**09-01·09-02 개정**) | `"Row"` / `"Column"` — `justify`/`align`(09-01)에 이어 자식 `weight`(09-02 `c8e76a4`·`55652b0`)까지 구현됐습니다. **두 파일 모두 TODO가 하나도 남지 않았습니다** |
 | `catalog/…Button.kt` (181줄) | 08-24 | `"Button"` |
 | `catalog/…Image.kt` (124줄) | 08-25 | `"Image"` — 유일하게 팩토리(`Defaults.image(imageRenderer)`)를 거칩니다 |
-| `catalog/…Icon.kt` (119줄) | **08-27 신설** | `"Icon"` — `MaterialIconComponent.kt`(204줄)를 대체 |
+| `catalog/…Icon.kt` (119줄) | **08-27 신설** | `"Icon"` — `MaterialIconComponent.kt`(204줄)를 대체. 09-02에 `weight`를 받습니다 |
 | `catalog/…List.kt` (177줄) | **08-27 신설** | `"List"` — `LazyRow`/`LazyColumn`. `MaterialListComponent.kt`(230줄)를 대체 |
 | `catalog/…Tabs.kt` (127줄) | **08-27 신설** | `"Tabs"` — 탭이 지워져도 선택 인덱스를 유효하게 유지. `MaterialTabsComponent.kt`(173줄)에서 이름만 바뀐 게 아니라 46줄이 계약으로 빠졌습니다 |
-| `catalog/…DateTimeInput.kt` (330줄) | **08-27 신설** | `"DateTimeInput"` — M3 `DatePicker`/`TimePicker` 다이얼로그. **세 번째 입력 컴포넌트이자 이 모듈에서 가장 큰 컴포넌트** |
+| `catalog/…DateTimeInput.kt` (324줄) | **08-27 신설** | `"DateTimeInput"` — M3 `DatePicker`/`TimePicker` 다이얼로그. **이 모듈에서 가장 큰 컴포넌트**이고, 09-02 새 `format`·`if-then` 스키마 키워드의 첫 사용처입니다 |
+| `catalog/…Divider.kt` (39줄) | **09-01 신설** | `"Divider"` — `MaterialDividerComponent.kt`(59줄)를 대체. 프로퍼티가 전부 `StaticA2uiProperty`인 유일한 컴포넌트 |
+| `catalog/…CheckBox.kt` (74줄) | **09-01 신설** | `"CheckBox"` — `MaterialCheckBoxComponent.kt`(116줄)를 대체. **첫 입력 컴포넌트**가 드디어 계약 안으로 |
+| `catalog/…Slider.kt` (116줄) | **09-01 신설** | `"Slider"` — `MaterialSliderComponent.kt`(177줄)를 대체. `min > max`면 그리지 않고 `reportError`(`TODO(b/549060875)`) |
+| `catalog/…Video.kt` (64줄) | **09-02 신설** | `"Video"` — 프로퍼티는 `url` 하나. **컴포넌트가 아니라 `A2uiVideoRenderer`를 앱이 줍니다**(Media3/ExoPlayer 등). 모듈 자체는 미디어 라이브러리에 의존하지 않습니다 |
+| `catalog/…AudioPlayer.kt` (78줄) | **09-02 신설** | `"AudioPlayer"` — `Video`와 같은 렌더러 주입 구조(`A2uiAudioPlayerRenderer`) |
 
-> `MaterialTextComponent.kt`(08-12)·`MaterialCardComponent.kt`(08-17)에 이어 **8/24 `MaterialButtonComponent`·`MaterialRowComponent`·`MaterialColumnComponent`가, 8/27 `MaterialIconComponent`·`MaterialListComponent`·`MaterialTabsComponent`가 삭제됐습니다.** 같은 코드가 `catalog/` 아래로 옮겨가면서 `public object`에서 `internal object`가 됐고, 타입이 `A2uiBasicCatalogV1.X`로 바뀌었습니다. 이름으로 import하던 코드는 전부 깨집니다 — 이 저장소의 데모 카탈로그가 8/19, 8/21, 8/24에 이어 이번에도 그랬습니다.
+> `MaterialTextComponent.kt`(08-12)·`MaterialCardComponent.kt`(08-17)에 이어 **8/24 `MaterialButtonComponent`·`MaterialRowComponent`·`MaterialColumnComponent`가, 8/27 `MaterialIconComponent`·`MaterialListComponent`·`MaterialTabsComponent`가, 9/1 `MaterialDividerComponent`·`MaterialCheckBoxComponent`·`MaterialSliderComponent`가 삭제됐습니다.** 같은 코드가 `catalog/` 아래로 옮겨가면서 `public object`에서 `internal object`가 됐고, 타입이 `A2uiBasicCatalogV1.X`로 바뀌었습니다. 이름으로 import하던 코드는 전부 깨집니다 — 이 저장소의 데모 카탈로그가 8/19, 8/21, 8/24에 이어 이번에도 그랬습니다.
 >
-> 패턴이 확인됐습니다. **계약에 컴포넌트가 하나 들어갈 때마다 같은 이름의 public object가 하나 사라집니다.** 남은 public object는 이제 넷(`MaterialDividerComponent`·`MaterialCheckBoxComponent`·`MaterialSliderComponent`·`MaterialTextFieldComponent`)뿐이고, 이들도 같은 길로 갈 것이므로 `Material*Component`를 이름으로 붙들고 있는 코드는 전부 시한부입니다. 안전한 쪽은 처음부터 `MaterialA2uiBasicCatalogV1Defaults`를 거치는 것입니다.
+> 패턴이 확인됐습니다. **계약에 컴포넌트가 하나 들어갈 때마다 같은 이름의 public object가 하나 사라집니다.** 9/1 하루에 셋이 한꺼번에 넘어가면서 남은 public object는 **`MaterialTextFieldComponent` 하나**뿐입니다. 이것도 같은 길로 갈 것이므로 `Material*Component`를 이름으로 붙들고 있는 코드는 전부 시한부입니다 — 실질적으로 **이 이주는 이미 끝났다고 봐도 됩니다.** 안전한 쪽은 처음부터 `MaterialA2uiBasicCatalogV1Defaults`를 거치는 것입니다.
 
 **카탈로그를 통째로 받는 길이 생겼습니다:**
 
 ```kotlin
 public fun materialA2uiBasicCatalogV1(
-    image: A2uiBasicCatalogV1.Image,              // 유일한 필수 파라미터 — 렌더러를 앱이 준다
+    image: A2uiBasicCatalogV1.Image,              // 렌더러를 앱이 준다
+    video: A2uiBasicCatalogV1.Video,              // 09-02 신설 — 기본값 없음
+    audioPlayer: A2uiBasicCatalogV1.AudioPlayer,  // 09-02 신설 — 기본값 없음
     urlOpener: A2uiUrlOpener,
     messageFormatter: A2uiMessageFormatter,
     localeProvider: A2uiLocaleProvider,
@@ -647,14 +667,19 @@ public fun materialA2uiBasicCatalogV1(
     column:A2uiBasicCatalogV1.Column = MaterialA2uiBasicCatalogV1Defaults.column,
     list:  A2uiBasicCatalogV1.List   = MaterialA2uiBasicCatalogV1Defaults.list,          // 08-27
     tabs:  A2uiBasicCatalogV1.Tabs   = MaterialA2uiBasicCatalogV1Defaults.tabs,          // 08-27
+    divider:  A2uiBasicCatalogV1.Divider  = MaterialA2uiBasicCatalogV1Defaults.divider,  // 09-01
     button:A2uiBasicCatalogV1.Button = MaterialA2uiBasicCatalogV1Defaults.button,
+    checkBox: A2uiBasicCatalogV1.CheckBox = MaterialA2uiBasicCatalogV1Defaults.checkBox, // 09-01
+    slider:   A2uiBasicCatalogV1.Slider   = MaterialA2uiBasicCatalogV1Defaults.slider,   // 09-01
     dateTimeInput: A2uiBasicCatalogV1.DateTimeInput =
         MaterialA2uiBasicCatalogV1Defaults.dateTimeInput,                                // 08-27
     // TODO(b/547851648): 나머지 컴포넌트 타입 추가
 ): A2uiCatalog
 ```
 
-앱이 컴포넌트를 하나씩 모아 `A2uiCatalog(...)`를 부르던 조립 작업을 라이브러리가 대신합니다. 함수 목록도 `createBasicCatalogFunctions(...)`로 함께 들어갑니다. 파라미터가 컴포넌트마다 하나씩 늘어나고 전부 기본값이 있으므로, **호출하는 쪽 코드는 계약이 채워져도 그대로**입니다 — 디자인 시스템을 바꿔 끼우고 싶은 컴포넌트만 이름으로 넘기면 됩니다. 여기 들어가는 컴포넌트가 **8/21의 둘에서 8/27에 열이 됐습니다** — Text·Image·Icon·Card·Row·Column·List·Tabs·Button·DateTimeInput. 8/21 기준으로 "실제로 화면을 그리려면 여전히 `A2uiCatalog(catalogId, components, functions)` 쪽을 써야 한다"고 적었지만, 이제는 **팩토리 하나로 화면이 그려집니다.** 남은 여덟 개(Divider·CheckBox·Slider·TextField 등)를 섞어 쓸 때만 낮은 층 생성자가 필요합니다 — 이 저장소의 androidx 카탈로그 세 개가 그 예입니다.
+앱이 컴포넌트를 하나씩 모아 `A2uiCatalog(...)`를 부르던 조립 작업을 라이브러리가 대신합니다. 함수 목록도 `createBasicCatalogFunctions(...)`로 함께 들어갑니다. 여기 들어가는 컴포넌트가 **8/21의 둘에서 8/27에 열, 9/1에 열셋, 9/2에 열다섯이 됐습니다** — Text·Image·Icon·Video·AudioPlayer·Card·Row·Column·List·Tabs·Divider·Button·CheckBox·Slider·DateTimeInput. 8/21 기준으로 "실제로 화면을 그리려면 여전히 `A2uiCatalog(catalogId, components, functions)` 쪽을 써야 한다"고 적었지만, 이제는 **팩토리 하나로 화면이 그려집니다.** 계약 밖에 남은 셋(구현된 건 `TextField` 하나뿐, 나머지 둘은 아직 `TODO(b/547851648)`)을 섞어 쓸 때만 낮은 층 생성자가 필요합니다 — 이 저장소의 androidx 카탈로그 세 개가 그 예입니다.
+
+> **9/2에 깨진 약속.** 8/21에 여기 적었던 "파라미터가 컴포넌트마다 하나씩 늘어나고 전부 기본값이 있으므로 호출하는 쪽 코드는 계약이 채워져도 그대로"라는 말은 **더 이상 사실이 아닙니다.** `Video`와 `AudioPlayer`는 `Image`처럼 앱이 렌더러를 주입해야 해서 기본값을 줄 수 없고, 그래서 **기본값 없는 필수 파라미터**로 들어왔습니다 — 필수 파라미터가 넷에서 여섯이 되면서 `materialA2uiBasicCatalogV1(...)`의 **기존 호출부는 전부 컴파일 에러**가 납니다. 계약이 채워지는 비용은 "이름으로 import한 `Material*Component`가 사라지는 것"만이 아니었습니다. **재생 계열 컴포넌트는 라이브러리가 대신 줄 수 없다**는 게 이유이니, 앞으로 미디어·지도처럼 외부 의존이 필요한 컴포넌트가 합류할 때마다 같은 일이 반복됩니다.
 
 **`MaterialA2uiBasicCatalogV1Button` — 컴포넌트 작성의 표준 형태 (08-24부터 이 모양):**
 
@@ -808,6 +833,6 @@ dispatchAction(payload)                    [compose-runtime/A2uiComponentScopeIm
 - **프로토콜은 v0.9 고정입니다.** 스펙이 v1.0으로 가는 중이지만 구현은 `v0.9`/`v0.9.1`만 받습니다.
 - **컴포넌트 카탈로그는 10/18입니다.** Text·Button·Card·Row·Column·Divider·CheckBox·List·Tabs·Slider. 그것도 quarantine 모듈이고, 입력을 받는 것은 CheckBox와 Slider 둘뿐입니다 — 이름·날짜·평점을 받으려면 여전히 직접 써야 합니다.
 - **라이브러리가 카탈로그를 주기 시작했습니다.** 8/17에 들어왔다 되돌려졌던(`120e2b24` → `1468f10b`) 기본 카탈로그 계약이 8/19 `Revert^2`(`cd391bdf`)로 재착륙했습니다. `A2uiBasicCatalogV1`이 컴포넌트 타입·프로퍼티 스키마·테마 스키마·카탈로그 ID를 라이브러리 쪽에 고정하고, `materialA2uiBasicCatalogV1(...)`이 M3 구현을 통째로 내줍니다. **계약에 들어 있는 컴포넌트는 `Text`(8/19)와 `Card`(8/21) 둘**이고 나머지 16개는 `TODO(b/547851648)`입니다. 이틀에 하나꼴이니, 이 문서를 읽는 시점의 숫자는 둘보다 클 것입니다.
-- **상류가 배포된 material3보다 앞서 갑니다.** 8/20 `MaterialSliderComponent`가 `SliderState(trackRange = ...)`로 이사했고 같은 날 모듈의 의존이 `material3:1.5.0-alpha26`에서 `project(":compose:material3:material3")`로 바뀌었습니다. 즉 **지금의 `material3-a2ui`는 AOSP 트리 밖에서 그대로 컴파일되지 않습니다.** 이 저장소처럼 소스를 가져다 쓰는 쪽은 파일 단위로 리비전을 고정하게 됩니다.
+- **상류가 배포된 material3보다 앞서 갑니다.** 8/20 `MaterialSliderComponent`가 `SliderState(trackRange = ...)`로 이사했고 같은 날 모듈의 의존이 `material3:1.5.0-alpha26`에서 `project(":compose:material3:material3")`로 바뀌었습니다. 즉 **지금의 `material3-a2ui`는 AOSP 트리 밖에서 그대로 컴파일되지 않습니다.** 이 저장소처럼 소스를 가져다 쓰는 쪽은 파일 단위로 리비전을 고정하게 됩니다 — 그리고 그 고정은 **상류가 파일을 옮기면 같이 따라가야 합니다.** 9/1 `Slider`가 계약으로 들어가면서 `MaterialSliderComponent.kt`가 사라졌고, `a2ui-compose-labs/androidx-a2ui/`의 핀도 `catalog/MaterialA2uiBasicCatalogV1Slider.kt`로 옮겼습니다. 9/2 `7ac433e`의 ktfmt 0.64 재포맷도 핀에 그대로 반영해, 핀과 상류의 차이는 **여전히 `SliderState(trackRange = ...)` 한 곳뿐**입니다. Maven 최신은 아직도 `1.5.0-alpha27`(2026-09-03 재확인).
 
 정리하면 — **프레임워크는 읽고 배울 만큼 완성돼 있고, 컴포넌트 카탈로그는 절반쯤 쓰였고, 배포는 시작되지 않았습니다.**

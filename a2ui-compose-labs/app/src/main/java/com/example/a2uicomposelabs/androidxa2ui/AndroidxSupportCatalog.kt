@@ -4,8 +4,6 @@ import androidx.a2ui.compose.ui.A2uiCatalog
 import androidx.a2ui.model.catalog.functions.A2uiFormatStringFunction
 import androidx.a2ui.model.catalog.functions.A2uiNumericFunction
 import androidx.a2ui.model.catalog.functions.A2uiRequiredFunction
-import androidx.compose.material3.a2ui.MaterialCheckBoxComponent
-import androidx.compose.material3.a2ui.MaterialSliderComponent
 import androidx.compose.material3.a2ui.catalog.MaterialA2uiBasicCatalogV1Defaults
 
 /** The support survey's catalog, quoted by every CSAT message the agent and the app send. */
@@ -36,8 +34,8 @@ val AndroidxSupportCatalog: A2uiCatalog =
                 MaterialA2uiBasicCatalogV1Defaults.column,
                 MaterialA2uiBasicCatalogV1Defaults.text,
                 MaterialA2uiBasicCatalogV1Defaults.button,
-                MaterialCheckBoxComponent, // landed 18 Aug 2026
-                MaterialSliderComponent, // landed 19 Aug 2026
+                MaterialA2uiBasicCatalogV1Defaults.checkBox, // 18 Aug 2026, into the contract 1 Sep
+                MaterialA2uiBasicCatalogV1Defaults.slider, // 19 Aug 2026, into the contract 1 Sep
                 // Written in this app.
                 QuestionComponent, // AndroidxSurveyComponents.kt
                 StarRatingComponent, // AndroidxSurveyComponents.kt

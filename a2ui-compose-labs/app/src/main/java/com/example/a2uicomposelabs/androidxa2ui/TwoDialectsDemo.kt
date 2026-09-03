@@ -36,14 +36,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.a2uicomposelabs.a2ui.A2uiClient
-import com.example.a2uicomposelabs.a2ui.ComponentRegistry
-import com.example.a2uicomposelabs.a2ui.BasicCatalog
+import com.example.a2uicomposelabs.a2ui.runtime.A2uiClient
+import com.example.a2uicomposelabs.a2ui.ui.ComponentRegistry
+import com.example.a2uicomposelabs.a2ui.catalog.BasicCatalog
 import com.example.a2uicomposelabs.demos.SurveyCatalog
 import com.example.a2uicomposelabs.demos.SurveyCatalogSchema
 import kotlinx.coroutines.launch
 import androidx.compose.material3.a2ui.A2uiSurface as AndroidxA2uiSurface
-import com.example.a2uicomposelabs.a2ui.A2uiSurface as OurA2uiSurface
+import com.example.a2uicomposelabs.a2ui.ui.A2uiSurface as OurA2uiSurface
 
 /**
  * The restaurant booking and the survey, each rendered twice: once by androidx.a2ui reading a
@@ -51,7 +51,7 @@ import com.example.a2uicomposelabs.a2ui.A2uiSurface as OurA2uiSurface
  *
  * Both halves are live. The androidx half depends on the :androidx-a2ui module, which compiles
  * the AOSP snapshot checked in at the repo root, so the components on screen really are
- * MaterialSliderComponent, MaterialA2uiBasicCatalogV1Defaults.card and friends.
+ * MaterialA2uiBasicCatalogV1Defaults.slider, .card and friends.
  */
 private enum class Scenario(val label: String, val surfaceId: String, val catalogId: String) {
     Booking("Booking", "booking", BOOKING_CATALOG_ID),

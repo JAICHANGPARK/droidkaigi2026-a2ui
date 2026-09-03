@@ -1,7 +1,7 @@
 package com.example.a2uicomposelabs
 
-import com.example.a2uicomposelabs.a2ui.A2uiCatalog
-import com.example.a2uicomposelabs.a2ui.BasicCatalogSchema
+import com.example.a2uicomposelabs.a2ui.model.A2uiCatalog
+import com.example.a2uicomposelabs.a2ui.model.BasicCatalogSchema
 import com.example.a2uicomposelabs.demos.AssistantCatalogSchema
 import com.example.a2uicomposelabs.demos.DiningCatalogSchema
 import com.example.a2uicomposelabs.demos.MusicCatalogSchema

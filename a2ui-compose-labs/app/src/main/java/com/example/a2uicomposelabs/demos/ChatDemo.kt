@@ -26,12 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.a2uicomposelabs.a2ui.A2uiClient
-import com.example.a2uicomposelabs.a2ui.A2uiSurface
-import com.example.a2uicomposelabs.a2ui.BasicCatalog
-import com.example.a2uicomposelabs.a2ui.BasicCatalogSchema
-import com.example.a2uicomposelabs.a2ui.ComponentRegistry
-import com.example.a2uicomposelabs.a2ui.replayAsset
+import com.example.a2uicomposelabs.a2ui.runtime.A2uiClient
+import com.example.a2uicomposelabs.a2ui.ui.A2uiSurface
+import com.example.a2uicomposelabs.a2ui.catalog.BasicCatalog
+import com.example.a2uicomposelabs.a2ui.model.BasicCatalogSchema
+import com.example.a2uicomposelabs.a2ui.ui.ComponentRegistry
+import com.example.a2uicomposelabs.a2ui.testing.replayAsset
 import kotlinx.coroutines.launch
 
 private sealed interface ChatItem {

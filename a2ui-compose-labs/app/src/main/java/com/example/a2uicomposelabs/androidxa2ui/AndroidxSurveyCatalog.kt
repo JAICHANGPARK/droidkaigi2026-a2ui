@@ -3,7 +3,6 @@ package com.example.a2uicomposelabs.androidxa2ui
 import androidx.a2ui.compose.ui.A2uiCatalog
 import androidx.a2ui.model.catalog.functions.A2uiFormatStringFunction
 import androidx.a2ui.model.catalog.functions.A2uiRequiredFunction
-import androidx.compose.material3.a2ui.MaterialCheckBoxComponent
 import androidx.compose.material3.a2ui.catalog.MaterialA2uiBasicCatalogV1Defaults
 
 /** The survey's catalog, quoted by every survey message on either wire. */
@@ -31,7 +30,7 @@ val AndroidxSurveyCatalog: A2uiCatalog =
                 MaterialA2uiBasicCatalogV1Defaults.column,
                 MaterialA2uiBasicCatalogV1Defaults.text,
                 MaterialA2uiBasicCatalogV1Defaults.button,
-                MaterialCheckBoxComponent, // landed 18 Aug 2026, its only input control
+                MaterialA2uiBasicCatalogV1Defaults.checkBox, // its only input control
                 // Written in this app.
                 QuestionComponent, // AndroidxSurveyComponents.kt
                 StarRatingComponent, // AndroidxSurveyComponents.kt

@@ -1,13 +1,13 @@
 package com.example.a2uicomposelabs
 
-import com.example.a2uicomposelabs.a2ui.A2uiCatalog
-import com.example.a2uicomposelabs.a2ui.A2uiMessage
-import com.example.a2uicomposelabs.a2ui.A2uiSchemaValidator
-import com.example.a2uicomposelabs.a2ui.A2uiValidationException
-import com.example.a2uicomposelabs.a2ui.BasicCatalogSchema
-import com.example.a2uicomposelabs.a2ui.BasicCatalog
-import com.example.a2uicomposelabs.a2ui.ComponentNode
-import com.example.a2uicomposelabs.a2ui.ComponentRegistry
+import com.example.a2uicomposelabs.a2ui.model.A2uiCatalog
+import com.example.a2uicomposelabs.a2ui.model.A2uiMessage
+import com.example.a2uicomposelabs.a2ui.engine.A2uiSchemaValidator
+import com.example.a2uicomposelabs.a2ui.engine.A2uiValidationException
+import com.example.a2uicomposelabs.a2ui.model.BasicCatalogSchema
+import com.example.a2uicomposelabs.a2ui.catalog.BasicCatalog
+import com.example.a2uicomposelabs.a2ui.model.ComponentNode
+import com.example.a2uicomposelabs.a2ui.ui.ComponentRegistry
 import com.example.a2uicomposelabs.demos.AlbumCatalog
 import com.example.a2uicomposelabs.demos.AnalyticsCatalog
 import com.example.a2uicomposelabs.demos.AnalyticsCatalogSchema

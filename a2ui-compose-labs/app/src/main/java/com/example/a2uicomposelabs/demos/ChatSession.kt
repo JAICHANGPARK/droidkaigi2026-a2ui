@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.example.a2uicomposelabs.a2ui.A2uiCatalog
-import com.example.a2uicomposelabs.a2ui.A2uiClient
+import com.example.a2uicomposelabs.a2ui.model.A2uiCatalog
+import com.example.a2uicomposelabs.a2ui.runtime.A2uiClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

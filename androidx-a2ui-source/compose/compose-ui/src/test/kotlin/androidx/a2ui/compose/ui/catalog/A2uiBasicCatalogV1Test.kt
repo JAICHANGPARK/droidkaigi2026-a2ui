@@ -20,6 +20,7 @@ import androidx.a2ui.compose.runtime.A2uiComponentReference
 import androidx.a2ui.compose.runtime.A2uiComponentScope
 import androidx.a2ui.model.catalog.A2uiFunction
 import androidx.a2ui.model.catalog.functions.A2uiFormatStringFunction
+import androidx.a2ui.model.schema.A2uiNumberSchema
 import androidx.a2ui.model.schema.A2uiObjectSchema
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -53,28 +54,46 @@ class A2uiBasicCatalogV1Test {
     }
 
     @Test
+    fun weightProperty_hasExpectedSchema() {
+        assertThat(A2uiBasicCatalogV1.WeightProperty.key).isEqualTo("weight")
+        assertThat(A2uiBasicCatalogV1.WeightProperty.isRequired).isFalse()
+        assertThat(A2uiBasicCatalogV1.WeightProperty.schema)
+            .isInstanceOf(A2uiNumberSchema::class.java)
+    }
+
+    @Test
     fun properties_initializedWithConstructorArguments() {
         val text = TestTextComponent()
         val image = TestImageComponent()
         val icon = TestIconComponent()
+        val video = TestVideoComponent()
+        val audioPlayer = TestAudioPlayerComponent()
         val card = TestCardComponent()
         val row = TestRowComponent()
         val column = TestColumnComponent()
         val list = TestListComponent()
         val tabs = TestTabsComponent()
+        val divider = TestDividerComponent()
         val button = TestButtonComponent()
+        val checkBox = TestCheckBoxComponent()
+        val slider = TestSliderComponent()
         val dateTimeInput = TestDateTimeInputComponent()
         val catalog =
             createTestBasicCatalog(
                 text = text,
                 image = image,
                 icon = icon,
+                video = video,
+                audioPlayer = audioPlayer,
                 card = card,
                 row = row,
                 column = column,
                 list = list,
                 tabs = tabs,
+                divider = divider,
                 button = button,
+                checkBox = checkBox,
+                slider = slider,
                 dateTimeInput = dateTimeInput,
                 functions = listOf(A2uiFormatStringFunction.INSTANCE),
             )
@@ -82,24 +101,34 @@ class A2uiBasicCatalogV1Test {
         assertThat(catalog.text).isSameInstanceAs(text)
         assertThat(catalog.image).isSameInstanceAs(image)
         assertThat(catalog.icon).isSameInstanceAs(icon)
+        assertThat(catalog.video).isSameInstanceAs(video)
+        assertThat(catalog.audioPlayer).isSameInstanceAs(audioPlayer)
         assertThat(catalog.card).isSameInstanceAs(card)
         assertThat(catalog.row).isSameInstanceAs(row)
         assertThat(catalog.column).isSameInstanceAs(column)
         assertThat(catalog.list).isSameInstanceAs(list)
         assertThat(catalog.tabs).isSameInstanceAs(tabs)
+        assertThat(catalog.divider).isSameInstanceAs(divider)
         assertThat(catalog.button).isSameInstanceAs(button)
+        assertThat(catalog.checkBox).isSameInstanceAs(checkBox)
+        assertThat(catalog.slider).isSameInstanceAs(slider)
         assertThat(catalog.dateTimeInput).isSameInstanceAs(dateTimeInput)
         assertThat(catalog.components)
             .containsExactly(
                 text,
                 image,
                 icon,
+                video,
+                audioPlayer,
                 card,
                 row,
                 column,
                 list,
                 tabs,
+                divider,
                 button,
+                checkBox,
+                slider,
                 dateTimeInput,
             )
         assertThat(catalog.functions).containsExactly(A2uiFormatStringFunction.INSTANCE)
@@ -110,24 +139,34 @@ class A2uiBasicCatalogV1Test {
         val text = TestTextComponent()
         val image = TestImageComponent()
         val icon = TestIconComponent()
+        val video = TestVideoComponent()
+        val audioPlayer = TestAudioPlayerComponent()
         val card = TestCardComponent()
         val row = TestRowComponent()
         val column = TestColumnComponent()
         val list = TestListComponent()
         val tabs = TestTabsComponent()
+        val divider = TestDividerComponent()
         val button = TestButtonComponent()
+        val checkBox = TestCheckBoxComponent()
+        val slider = TestSliderComponent()
         val dateTimeInput = TestDateTimeInputComponent()
         val catalog1 =
             createTestBasicCatalog(
                 text = text,
                 image = image,
                 icon = icon,
+                video = video,
+                audioPlayer = audioPlayer,
                 card = card,
                 row = row,
                 column = column,
                 list = list,
                 tabs = tabs,
+                divider = divider,
                 button = button,
+                checkBox = checkBox,
+                slider = slider,
                 dateTimeInput = dateTimeInput,
             )
         val catalog2 =
@@ -135,12 +174,17 @@ class A2uiBasicCatalogV1Test {
                 text = text,
                 image = image,
                 icon = icon,
+                video = video,
+                audioPlayer = audioPlayer,
                 card = card,
                 row = row,
                 column = column,
                 list = list,
                 tabs = tabs,
+                divider = divider,
                 button = button,
+                checkBox = checkBox,
+                slider = slider,
                 dateTimeInput = dateTimeInput,
             )
 
@@ -154,24 +198,34 @@ class A2uiBasicCatalogV1Test {
         val text2 = TestTextComponent()
         val sharedImage = TestImageComponent()
         val sharedIcon = TestIconComponent()
+        val sharedVideo = TestVideoComponent()
+        val sharedAudioPlayer = TestAudioPlayerComponent()
         val sharedCard = TestCardComponent()
         val sharedRow = TestRowComponent()
         val sharedColumn = TestColumnComponent()
         val sharedList = TestListComponent()
         val sharedTabs = TestTabsComponent()
+        val sharedDivider = TestDividerComponent()
         val sharedButton = TestButtonComponent()
+        val sharedCheckBox = TestCheckBoxComponent()
+        val sharedSlider = TestSliderComponent()
         val sharedDateTimeInput = TestDateTimeInputComponent()
         val catalog1 =
             createTestBasicCatalog(
                 text = text1,
                 image = sharedImage,
                 icon = sharedIcon,
+                video = sharedVideo,
+                audioPlayer = sharedAudioPlayer,
                 card = sharedCard,
                 row = sharedRow,
                 column = sharedColumn,
                 list = sharedList,
                 tabs = sharedTabs,
+                divider = sharedDivider,
                 button = sharedButton,
+                checkBox = sharedCheckBox,
+                slider = sharedSlider,
                 dateTimeInput = sharedDateTimeInput,
             )
         val catalog2 =
@@ -179,12 +233,17 @@ class A2uiBasicCatalogV1Test {
                 text = text2,
                 image = sharedImage,
                 icon = sharedIcon,
+                video = sharedVideo,
+                audioPlayer = sharedAudioPlayer,
                 card = sharedCard,
                 row = sharedRow,
                 column = sharedColumn,
                 list = sharedList,
                 tabs = sharedTabs,
+                divider = sharedDivider,
                 button = sharedButton,
+                checkBox = sharedCheckBox,
+                slider = sharedSlider,
                 dateTimeInput = sharedDateTimeInput,
             )
 
@@ -200,7 +259,8 @@ class A2uiBasicCatalogV1Test {
         assertThat(catalog.toString()).contains("themeSchema=${A2uiBasicCatalogV1.ThemeSchema}")
         assertThat(catalog.toString())
             .containsMatch(
-                "components=.*Text.*Image.*Icon.*Card.*Row.*Column.*List.*Tabs.*Button.*DateTimeInput"
+                "components=.*Text.*Image.*Icon.*Video.*AudioPlayer.*Card.*Row.*Column.*List." +
+                    "*Tabs.*Divider.*Button.*CheckBox.*Slider.*DateTimeInput"
             )
         assertThat(catalog.toString()).contains("functions=[]")
     }
@@ -209,12 +269,17 @@ class A2uiBasicCatalogV1Test {
         text: A2uiBasicCatalogV1.Text = TestTextComponent(),
         image: A2uiBasicCatalogV1.Image = TestImageComponent(),
         icon: A2uiBasicCatalogV1.Icon = TestIconComponent(),
+        video: A2uiBasicCatalogV1.Video = TestVideoComponent(),
+        audioPlayer: A2uiBasicCatalogV1.AudioPlayer = TestAudioPlayerComponent(),
         card: A2uiBasicCatalogV1.Card = TestCardComponent(),
         row: A2uiBasicCatalogV1.Row = TestRowComponent(),
         column: A2uiBasicCatalogV1.Column = TestColumnComponent(),
         list: A2uiBasicCatalogV1.List = TestListComponent(),
         tabs: A2uiBasicCatalogV1.Tabs = TestTabsComponent(),
+        divider: A2uiBasicCatalogV1.Divider = TestDividerComponent(),
         button: A2uiBasicCatalogV1.Button = TestButtonComponent(),
+        checkBox: A2uiBasicCatalogV1.CheckBox = TestCheckBoxComponent(),
+        slider: A2uiBasicCatalogV1.Slider = TestSliderComponent(),
         dateTimeInput: A2uiBasicCatalogV1.DateTimeInput = TestDateTimeInputComponent(),
         functions: List<A2uiFunction> = emptyList(),
     ) =
@@ -222,12 +287,17 @@ class A2uiBasicCatalogV1Test {
             text = text,
             image = image,
             icon = icon,
+            video = video,
+            audioPlayer = audioPlayer,
             card = card,
             row = row,
             column = column,
             list = list,
             tabs = tabs,
+            divider = divider,
             button = button,
+            checkBox = checkBox,
+            slider = slider,
             dateTimeInput = dateTimeInput,
             functions = functions,
         )
@@ -257,6 +327,19 @@ class A2uiBasicCatalogV1Test {
         override fun A2uiComponentScope.TypedContent(
             source: A2uiBasicCatalogV1.Icon.Source,
             accessibility: A2uiBasicCatalogV1.AccessibilityAttributes?,
+            modifier: Modifier,
+        ) {}
+    }
+
+    private class TestVideoComponent : A2uiBasicCatalogV1.Video {
+        @Composable override fun A2uiComponentScope.TypedContent(url: String, modifier: Modifier) {}
+    }
+
+    private class TestAudioPlayerComponent : A2uiBasicCatalogV1.AudioPlayer {
+        @Composable
+        override fun A2uiComponentScope.TypedContent(
+            url: String,
+            description: String?,
             modifier: Modifier,
         ) {}
     }
@@ -304,12 +387,44 @@ class A2uiBasicCatalogV1Test {
         ) {}
     }
 
+    private class TestDividerComponent : A2uiBasicCatalogV1.Divider {
+        @Composable
+        override fun A2uiComponentScope.TypedContent(
+            axis: A2uiBasicCatalogV1.Divider.Axis,
+            modifier: Modifier,
+        ) {}
+    }
+
     private class TestButtonComponent : A2uiBasicCatalogV1.Button {
         @Composable
         override fun A2uiComponentScope.TypedContent(
             childId: String,
             variant: A2uiBasicCatalogV1.Button.Variant,
             action: Map<String, Any?>,
+            modifier: Modifier,
+        ) {}
+    }
+
+    private class TestCheckBoxComponent : A2uiBasicCatalogV1.CheckBox {
+        @Composable
+        override fun A2uiComponentScope.TypedContent(
+            label: String,
+            value: Boolean,
+            onValueChange: (Boolean) -> Unit,
+            enabled: Boolean,
+            modifier: Modifier,
+        ) {}
+    }
+
+    private class TestSliderComponent : A2uiBasicCatalogV1.Slider {
+        @Composable
+        override fun A2uiComponentScope.TypedContent(
+            label: String?,
+            min: Float,
+            max: Float,
+            value: Float,
+            onValueChange: (Float) -> Unit,
+            enabled: Boolean,
             modifier: Modifier,
         ) {}
     }

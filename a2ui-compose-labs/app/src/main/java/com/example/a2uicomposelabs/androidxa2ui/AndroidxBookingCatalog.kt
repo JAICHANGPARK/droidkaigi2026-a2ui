@@ -10,7 +10,6 @@ import androidx.a2ui.model.catalog.functions.A2uiNumericFunction
 import androidx.a2ui.model.catalog.functions.A2uiOrFunction
 import androidx.a2ui.model.catalog.functions.A2uiRegexFunction
 import androidx.a2ui.model.catalog.functions.A2uiRequiredFunction
-import androidx.compose.material3.a2ui.MaterialSliderComponent
 import androidx.compose.material3.a2ui.catalog.MaterialA2uiBasicCatalogV1Defaults
 
 /** The booking form's catalog, quoted by every booking message on either wire. */
@@ -46,7 +45,7 @@ val AndroidxBookingCatalog: A2uiCatalog =
                 MaterialA2uiBasicCatalogV1Defaults.column,
                 MaterialA2uiBasicCatalogV1Defaults.text,
                 MaterialA2uiBasicCatalogV1Defaults.button,
-                MaterialSliderComponent, // landed 19 Aug 2026
+                MaterialA2uiBasicCatalogV1Defaults.slider, // 19 Aug 2026, into the contract 1 Sep
                 // Written in this app.
                 TextFieldComponent, // AndroidxSharedComponents.kt
                 DateTimeInputComponent, // AndroidxBookingComponents.kt

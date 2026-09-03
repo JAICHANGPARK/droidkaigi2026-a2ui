@@ -36,6 +36,13 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+// AGP 9.3 stopped having DefaultAndroidLibrarySourceSet implement the legacy
+// com.android.build.gradle.api.AndroidLibrarySourceSet, so reaching sourceSets through the
+// legacy `android {}` accessor throws ClassCastException at configuration time. The same
+// object is reachable through the com.android.build.api.dsl type, which it does implement.
+extensions.configure<com.android.build.api.dsl.LibraryExtension>("android") {
     sourceSets.named("main") {
         kotlin.setSrcDirs(
             listOf(
@@ -48,16 +55,19 @@ android {
                 "src/pinned/kotlin",
             )
         )
-        // MaterialSliderComponent moved to the new material3 SliderState(trackRange = ...)
-        // API on 20 Aug 2026 (androidx-main 30a6b57, "[Slider] Deprecate stateless Slider and
-        // RangeSlider overloads"). That API is unreleased: 1.5.0-alpha26 is the newest
-        // material3 on Maven and it has no `trackRange`. Upstream does not notice, because
+        // The A2UI Slider moved to the new material3 SliderState(trackRange = ...) API on
+        // 20 Aug 2026 (androidx-main 30a6b57, "[Slider] Deprecate stateless Slider and
+        // RangeSlider overloads"). That API is still unreleased: 1.5.0-alpha27 is the newest
+        // material3 on Maven (re-checked 2026-09-02). Upstream does not notice, because
         // material3-a2ui's build.gradle switched the same day from the alpha26 artifact to
         // project(":compose:material3:material3") — it now builds only inside AOSP.
         //
-        // So this one file comes from src/pinned/kotlin: upstream's own previous revision
-        // (7ce8b02, 19 Aug), byte for byte, not a rewrite. Everything else is HEAD. Delete
-        // the pin and drop the exclude when material3 ships trackRange.
+        // On 1 Sep 2026 (6198d65) the standalone MaterialSliderComponent was deleted and Slider
+        // joined the A2uiBasicCatalogV1 contract, so the pinned file moved with it: it is now
+        // catalog/MaterialA2uiBasicCatalogV1Slider, which MaterialA2uiBasicCatalogV1Defaults
+        // wires in by name. src/pinned/kotlin carries upstream's own file with one line changed
+        // — the stateless Slider overload instead of SliderState(trackRange = ...). Everything
+        // else is HEAD. Delete the pin and drop the exclude when material3 ships trackRange.
         // (the exclude that pairs with it is on the compile task below — the AGP 9 source
         // set DSL has no per-file filter)
         res.setSrcDirs(listOf("$aosp/androidx-material3-a2ui-source/src/main/res"))
@@ -69,10 +79,10 @@ kotlin {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    // Drops the snapshot's copy; src/pinned/kotlin/PinnedMaterialSliderComponent.kt supplies
-    // the same object from upstream's previous revision. The pattern is relative to each
-    // source root, which is why the pinned file carries a different file name.
-    exclude("**/MaterialSliderComponent.kt")
+    // Drops the snapshot's copy; src/pinned/kotlin/PinnedMaterialA2uiBasicCatalogV1Slider.kt
+    // supplies the same internal object against the published material3 API. The pattern is
+    // relative to each source root, which is why the pinned file carries a different file name.
+    exclude("**/MaterialA2uiBasicCatalogV1Slider.kt")
 }
 
 dependencies {

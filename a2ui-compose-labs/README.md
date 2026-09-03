@@ -71,6 +71,29 @@ appears in a tracked file.
   `BasicCatalog`, `A2uiCatalog`/`BasicCatalogSchema`, `A2uiSchema`, `A2uiSchemaValidator`,
   `BindingScope`, `A2uiAction`, `A2uiMessage`, `JsonPointer`, `replayAsset`.
   No network code lives here — the renderer never talks to a model.
+
+  Its packages are named after the AOSP modules they answer to, so the two trees can be
+  read side by side:
+
+  | Package | Files | Lines | `androidx.compose` imports | Answers to |
+  |---|---|---|---|---|
+  | `a2ui.model` | 6 | 1,357 | **0** | `a2ui-model` — the wire: messages, actions, schema, catalog, functions |
+  | `a2ui.engine` | 4 | 519 | **0** | `a2ui-engine` — validation, dynamic-value evaluation, string templates, JSON Pointer |
+  | `a2ui.runtime` | 3 | 587 | 6 | `compose-runtime` — snapshot state, binding scope, the message processor |
+  | `a2ui.ui` | 2 | 96 | 6 | `compose-ui` — the component contract and the recursive surface |
+  | `a2ui.catalog` | 3 | 1,223 | 138 | `material3-a2ui` — the eighteen components and the fourteen functions |
+  | `a2ui.testing` | 1 | 24 | 0 | `compose-ui-testing` — JSONL replay for the demos |
+
+  The split is drawn on one line: **`model` and `engine` have zero Compose imports.** That is
+  the same line AOSP draws, and it is checkable here the same way — `grep -c "^import
+  androidx.compose"` over either package returns 0. Everything Compose knows about lives from
+  `runtime` up.
+
+  Two caveats, visible now that the packages are separate and invisible while everything sat in
+  one: `model.A2uiExecutionContext` holds a `runtime.SurfaceState` and an
+  `engine.A2uiDynamicEvaluator`, and `model.BasicCatalogSchema` names `catalog.BasicCatalogFunctions`.
+  So the dependency arrows are not yet strictly downward — the folders describe the layering,
+  they do not enforce it. Separate Gradle modules would; that is the next step, not this one.
 - **`:app`** — demo app depending on `project(":a2ui-renderer")` *and* on `project(":androidx-a2ui")`
   for demos 9 and 10; the assistant and the ten demos, the agent
   side (`agent/GeminiAgent.kt`, `agent/A2uiSystemPrompt.kt`, `agent/A2uiPayloadFixer.kt`),
@@ -80,17 +103,17 @@ appears in a tracked file.
 
 | Slide concept | File / class here |
 |---|---|
-| Message parsing (`createSurface` / `updateComponents` / `updateDataModel` / `deleteSurface`) | `A2uiMessage.kt` |
-| Message processor, reject-at-the-door | `A2uiClient.kt` |
-| Catalog as data: one declaration feeding both the prompt and the validator | `A2uiCatalog.kt` |
-| JSON Schema node types (`oneOf`, `enum`, `additionalProperties`, …) | `A2uiSchema.kt` |
-| Schema validation before state is touched | `A2uiSchemaValidator.kt` |
-| Surface state = `mutableStateMapOf` + `mutableStateOf` (message → state → recomposition) | `SurfaceState.kt` |
-| JSON Pointer (RFC 6901) data binding | `JsonPointer.kt`, `BindingScope.kt` |
-| Catalog allowlist enforced in code (unknown → skip, never crash, never guess) | `ComponentRegistry.kt`, `BasicCatalog.kt` |
-| Surface = a composable; recursive adjacency-list rendering, bounded depth | `A2uiSurface.kt` |
-| Renderer → agent `action` with resolved context | `A2uiAction.kt`, `BindingScope.dispatchAction` |
-| LLM streaming (JSONL, one message per line) | `JsonlReplay.kt` |
+| Message parsing (`createSurface` / `updateComponents` / `updateDataModel` / `deleteSurface`) | `model/A2uiMessage.kt` |
+| Message processor, reject-at-the-door | `runtime/A2uiClient.kt` |
+| Catalog as data: one declaration feeding both the prompt and the validator | `model/A2uiCatalog.kt` |
+| JSON Schema node types (`oneOf`, `enum`, `additionalProperties`, …) | `model/A2uiSchema.kt` |
+| Schema validation before state is touched | `engine/A2uiSchemaValidator.kt` |
+| Surface state = `mutableStateMapOf` + `mutableStateOf` (message → state → recomposition) | `runtime/SurfaceState.kt` |
+| JSON Pointer (RFC 6901) data binding | `engine/JsonPointer.kt`, `runtime/BindingScope.kt` |
+| Catalog allowlist enforced in code (unknown → skip, never crash, never guess) | `ui/ComponentRegistry.kt`, `catalog/BasicCatalog.kt` |
+| Surface = a composable; recursive adjacency-list rendering, bounded depth | `ui/A2uiSurface.kt` |
+| Renderer → agent `action` with resolved context | `model/A2uiAction.kt`, `runtime/BindingScope.dispatchAction` |
+| LLM streaming (JSONL, one message per line) | `testing/JsonlReplay.kt` |
 | Making Gemini speak A2UI (slide 33): system prompt = role + catalog schema + examples | `app/…/agent/A2uiSystemPrompt.kt` |
 | Components as a tool call, not as text: the agent assembles the messages, so the model never punctuates one | `app/…/agent/GeminiAgent.kt` (`streamUi`, `applyOneCall`) |
 | Refusals go back to the model itemised, so it rewrites one component and not the screen | `app/…/agent/GeminiAgent.kt` (`toolResult`) |
@@ -146,7 +169,7 @@ and an action-interceptor chain.
 The official (pre-alpha) source lives in AOSP `androidx-main:a2ui/`
 (<https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:a2ui/>) —
 a copy is in [`../androidx-a2ui-source/`](../androidx-a2ui-source/)
-(commit `2834c08`, 2026-08-29). The shapes match:
+(commit `ac85854`, 2026-09-02). The shapes match:
 
 | This mini renderer | Official androidx.a2ui |
 |---|---|
@@ -222,11 +245,13 @@ older version on the rest. About thirty lines, no component touched: what a
 protocol version costs you is an envelope, and what it costs the agent is a
 prompt.
 
-**The catalog is thinner.** `material3-a2ui` ships ten of the spec's eighteen
-components and three that take input (`CheckBox`, `Slider`, and `Text` behind
-`A2uiBasicCatalogV1`), so `Question`, `StarRating`, `ChoicePicker` and
-`TextField` are written in this app against `androidx.a2ui.compose.ui.A2uiComponent`
-— the same interface `MaterialCheckBoxComponent` implements. Each androidx screen
+**The catalog is thinner.** `material3-a2ui` ships sixteen of the spec's eighteen
+components — fifteen of them behind `A2uiBasicCatalogV1` after `Divider`, `CheckBox`
+and `Slider` joined on 1 Sep 2026 and `Video` and `AudioPlayer` on 2 Sep — but still
+no `TextField`, so
+`Question`, `StarRating`, `ChoicePicker` and `TextField` are written in this app
+against `androidx.a2ui.compose.ui.A2uiComponent` — the same interface every
+`A2uiBasicCatalogV1` component implements. Each androidx screen
 then declares its own catalog (`AndroidxBookingCatalog`, `AndroidxSurveyCatalog`,
 `AndroidxSupportCatalog`), because a catalog is an allowlist: the café survey
 cannot draw a `ChoicePicker` even though the file it lives in is right there.

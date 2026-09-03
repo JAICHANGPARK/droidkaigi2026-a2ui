@@ -57,6 +57,8 @@ fun A2uiSurfaceSample() {
     val catalog = remember {
         materialA2uiBasicCatalogV1(
             image = MaterialA2uiBasicCatalogV1Defaults.image { _, _, _, _, _ -> },
+            video = MaterialA2uiBasicCatalogV1Defaults.video { _, _, _ -> },
+            audioPlayer = MaterialA2uiBasicCatalogV1Defaults.audioPlayer { _, _, _, _ -> },
             urlOpener = {},
             messageFormatter = { pattern, _, _ -> pattern },
             localeProvider = A2uiLocaleProvider.Default,
@@ -101,6 +103,8 @@ fun A2uiSurfaceCustomLoadingAndErrorContentSample() {
     val catalog = remember {
         materialA2uiBasicCatalogV1(
             image = MaterialA2uiBasicCatalogV1Defaults.image { _, _, _, _, _ -> },
+            video = MaterialA2uiBasicCatalogV1Defaults.video { _, _, _ -> },
+            audioPlayer = MaterialA2uiBasicCatalogV1Defaults.audioPlayer { _, _, _, _ -> },
             urlOpener = {},
             messageFormatter = { pattern, _, _ -> pattern },
             localeProvider = A2uiLocaleProvider.Default,
@@ -173,6 +177,8 @@ fun A2uiSurfaceCustomTransitionSpecSample() {
     val catalog = remember {
         materialA2uiBasicCatalogV1(
             image = MaterialA2uiBasicCatalogV1Defaults.image { _, _, _, _, _ -> },
+            video = MaterialA2uiBasicCatalogV1Defaults.video { _, _, _ -> },
+            audioPlayer = MaterialA2uiBasicCatalogV1Defaults.audioPlayer { _, _, _, _ -> },
             urlOpener = {},
             messageFormatter = { pattern, _, _ -> pattern },
             localeProvider = A2uiLocaleProvider.Default,

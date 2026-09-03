@@ -1,4 +1,4 @@
-2834c08c1d9d2baadcd228fc24a776f121c832e0 2026-08-29
+ac85854a3e4497c86fdff83275ab14e0f298267a 2026-09-02
 AOSP path: androidx-main:compose/material3/material3-a2ui
 source: github.com/androidx/androidx (androidx-main mirror)
-tree: 9b5b97951107c5915fbd6bbbe0b14211dcfb5347
+tree: 2aaee3647aefc0401a393d5d3dd3a9d6945ca693

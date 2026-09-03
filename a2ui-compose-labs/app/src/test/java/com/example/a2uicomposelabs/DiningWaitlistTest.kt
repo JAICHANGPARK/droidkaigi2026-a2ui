@@ -1,9 +1,9 @@
 package com.example.a2uicomposelabs
 
-import com.example.a2uicomposelabs.a2ui.A2uiAction
-import com.example.a2uicomposelabs.a2ui.A2uiClient
-import com.example.a2uicomposelabs.a2ui.BindingScope
-import com.example.a2uicomposelabs.a2ui.SurfaceState
+import com.example.a2uicomposelabs.a2ui.model.A2uiAction
+import com.example.a2uicomposelabs.a2ui.runtime.A2uiClient
+import com.example.a2uicomposelabs.a2ui.runtime.BindingScope
+import com.example.a2uicomposelabs.a2ui.runtime.SurfaceState
 import com.example.a2uicomposelabs.demos.ChatSession
 import com.example.a2uicomposelabs.demos.DiningCatalogSchema
 import com.example.a2uicomposelabs.agent.A2uiToolCall

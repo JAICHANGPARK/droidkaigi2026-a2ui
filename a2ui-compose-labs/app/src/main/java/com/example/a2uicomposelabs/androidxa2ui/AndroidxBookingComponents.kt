@@ -33,7 +33,9 @@ import androidx.compose.runtime.setValue
 // The rest of that screen — Card, Column, Text, Slider, Button — comes from the library
 // unmodified. Slider used to be here too: upstream shipped MaterialSliderComponent on
 // 19 Aug 2026 with the same four property names this file had invented, so the hand-written
-// one was deleted and the same JSONL now drives Google's implementation.
+// one was deleted and the same JSONL now drives Google's implementation. On 1 Sep 2026 that
+// object was deleted in turn and Slider moved into the A2uiBasicCatalogV1 contract, so the
+// catalog now names MaterialA2uiBasicCatalogV1Defaults.slider — same component, third address.
 
 /** An ISO date and time, picked through the Material 3 date and time dialogs. */
 object DateTimeInputComponent : A2uiComponent {

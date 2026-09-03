@@ -136,12 +136,17 @@ class A2uiCatalogTest {
         assertThat(catalog.components["Text"]).isSameInstanceAs(basicCatalog.text)
         assertThat(catalog.components["Image"]).isSameInstanceAs(basicCatalog.image)
         assertThat(catalog.components["Icon"]).isSameInstanceAs(basicCatalog.icon)
+        assertThat(catalog.components["Video"]).isSameInstanceAs(basicCatalog.video)
+        assertThat(catalog.components["AudioPlayer"]).isSameInstanceAs(basicCatalog.audioPlayer)
         assertThat(catalog.components["Card"]).isSameInstanceAs(basicCatalog.card)
         assertThat(catalog.components["Row"]).isSameInstanceAs(basicCatalog.row)
         assertThat(catalog.components["Column"]).isSameInstanceAs(basicCatalog.column)
         assertThat(catalog.components["List"]).isSameInstanceAs(basicCatalog.list)
         assertThat(catalog.components["Tabs"]).isSameInstanceAs(basicCatalog.tabs)
+        assertThat(catalog.components["Divider"]).isSameInstanceAs(basicCatalog.divider)
         assertThat(catalog.components["Button"]).isSameInstanceAs(basicCatalog.button)
+        assertThat(catalog.components["CheckBox"]).isSameInstanceAs(basicCatalog.checkBox)
+        assertThat(catalog.components["Slider"]).isSameInstanceAs(basicCatalog.slider)
         assertThat(catalog.components["DateTimeInput"]).isSameInstanceAs(basicCatalog.dateTimeInput)
         assertThat(catalog.functions["TestFunc"]).isSameInstanceAs(testFunction)
         assertThat(catalog.isInline).isFalse()
@@ -331,12 +336,17 @@ class A2uiCatalogTest {
             text: A2uiBasicCatalogV1.Text = createStubText(),
             image: A2uiBasicCatalogV1.Image = createStubImage(),
             icon: A2uiBasicCatalogV1.Icon = createStubIcon(),
+            video: A2uiBasicCatalogV1.Video = createStubVideo(),
+            audioPlayer: A2uiBasicCatalogV1.AudioPlayer = createStubAudioPlayer(),
             card: A2uiBasicCatalogV1.Card = createStubCard(),
             row: A2uiBasicCatalogV1.Row = createStubRow(),
             column: A2uiBasicCatalogV1.Column = createStubColumn(),
             list: A2uiBasicCatalogV1.List = createStubList(),
             tabs: A2uiBasicCatalogV1.Tabs = createStubTabs(),
+            divider: A2uiBasicCatalogV1.Divider = createStubDivider(),
             button: A2uiBasicCatalogV1.Button = createStubButton(),
+            checkBox: A2uiBasicCatalogV1.CheckBox = createStubCheckBox(),
+            slider: A2uiBasicCatalogV1.Slider = createStubSlider(),
             dateTimeInput: A2uiBasicCatalogV1.DateTimeInput = createStubDateTimeInput(),
             functions: List<A2uiFunction> = emptyList(),
         ) =
@@ -344,12 +354,17 @@ class A2uiCatalogTest {
                 text = text,
                 image = image,
                 icon = icon,
+                video = video,
+                audioPlayer = audioPlayer,
                 card = card,
                 row = row,
                 column = column,
                 list = list,
                 tabs = tabs,
+                divider = divider,
                 button = button,
+                checkBox = checkBox,
+                slider = slider,
                 dateTimeInput = dateTimeInput,
                 functions = functions,
             )
@@ -382,6 +397,22 @@ class A2uiCatalogTest {
                 override fun A2uiComponentScope.TypedContent(
                     source: A2uiBasicCatalogV1.Icon.Source,
                     accessibility: A2uiBasicCatalogV1.AccessibilityAttributes?,
+                    modifier: Modifier,
+                ) {}
+            }
+
+        fun createStubVideo() =
+            object : A2uiBasicCatalogV1.Video {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(url: String, modifier: Modifier) {}
+            }
+
+        fun createStubAudioPlayer() =
+            object : A2uiBasicCatalogV1.AudioPlayer {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(
+                    url: String,
+                    description: String?,
                     modifier: Modifier,
                 ) {}
             }
@@ -434,6 +465,15 @@ class A2uiCatalogTest {
                 ) {}
             }
 
+        fun createStubDivider() =
+            object : A2uiBasicCatalogV1.Divider {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(
+                    axis: A2uiBasicCatalogV1.Divider.Axis,
+                    modifier: Modifier,
+                ) {}
+            }
+
         fun createStubButton() =
             object : A2uiBasicCatalogV1.Button {
                 @Composable
@@ -441,6 +481,32 @@ class A2uiCatalogTest {
                     childId: String,
                     variant: A2uiBasicCatalogV1.Button.Variant,
                     action: Map<String, Any?>,
+                    modifier: Modifier,
+                ) {}
+            }
+
+        fun createStubCheckBox() =
+            object : A2uiBasicCatalogV1.CheckBox {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(
+                    label: String,
+                    value: Boolean,
+                    onValueChange: (Boolean) -> Unit,
+                    enabled: Boolean,
+                    modifier: Modifier,
+                ) {}
+            }
+
+        fun createStubSlider() =
+            object : A2uiBasicCatalogV1.Slider {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(
+                    label: String?,
+                    min: Float,
+                    max: Float,
+                    value: Float,
+                    onValueChange: (Float) -> Unit,
+                    enabled: Boolean,
                     modifier: Modifier,
                 ) {}
             }

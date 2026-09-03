@@ -33,11 +33,11 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.unit.sp
-import com.example.a2uicomposelabs.a2ui.A2uiBooleanSchema
-import com.example.a2uicomposelabs.a2ui.A2uiComponentDefinition
-import com.example.a2uicomposelabs.a2ui.A2uiComponentFactory
-import com.example.a2uicomposelabs.a2ui.componentSchema
-import com.example.a2uicomposelabs.a2ui.dynamicString
+import com.example.a2uicomposelabs.a2ui.model.A2uiBooleanSchema
+import com.example.a2uicomposelabs.a2ui.model.A2uiComponentDefinition
+import com.example.a2uicomposelabs.a2ui.ui.A2uiComponentFactory
+import com.example.a2uicomposelabs.a2ui.model.componentSchema
+import com.example.a2uicomposelabs.a2ui.model.dynamicString
 import kotlinx.serialization.json.JsonPrimitive
 import kotlin.math.atan2
 import kotlin.math.max
@@ -74,14 +74,14 @@ import kotlin.math.hypot
  * Charts can be tapped. The renderer adds `label`, `value` and `index` of whatever the user
  * actually touched to the action payload, which the agent could not have known in advance.
  */
-private val chartActionSchema: com.example.a2uicomposelabs.a2ui.A2uiSchema =
-    com.example.a2uicomposelabs.a2ui.A2uiObjectSchema(
+private val chartActionSchema: com.example.a2uicomposelabs.a2ui.model.A2uiSchema =
+    com.example.a2uicomposelabs.a2ui.model.A2uiObjectSchema(
         properties = mapOf(
-            "name" to com.example.a2uicomposelabs.a2ui.A2uiStringSchema(
+            "name" to com.example.a2uicomposelabs.a2ui.model.A2uiStringSchema(
                 "Action name sent when a bar or slice is tapped."
             ),
-            "context" to com.example.a2uicomposelabs.a2ui.A2uiObjectSchema(
-                additionalPropertiesSchema = com.example.a2uicomposelabs.a2ui.A2uiAnySchema(),
+            "context" to com.example.a2uicomposelabs.a2ui.model.A2uiObjectSchema(
+                additionalPropertiesSchema = com.example.a2uicomposelabs.a2ui.model.A2uiAnySchema(),
                 description = "Extra values to send; the tapped label and value are added for you.",
             ),
         ),
@@ -89,7 +89,7 @@ private val chartActionSchema: com.example.a2uicomposelabs.a2ui.A2uiSchema =
         isAdditionalPropertiesAllowed = false,
     )
 
-private fun chartSchema(extra: Map<String, com.example.a2uicomposelabs.a2ui.A2uiSchema> = emptyMap()) =
+private fun chartSchema(extra: Map<String, com.example.a2uicomposelabs.a2ui.model.A2uiSchema> = emptyMap()) =
     componentSchema(
         properties = mapOf(
             "title" to dynamicString("Heading shown above the chart."),

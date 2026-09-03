@@ -1,6 +1,6 @@
 package com.example.a2uicomposelabs
 
-import com.example.a2uicomposelabs.a2ui.A2uiClient
+import com.example.a2uicomposelabs.a2ui.runtime.A2uiClient
 import com.example.a2uicomposelabs.demos.DiningCatalogSchema
 import com.example.a2uicomposelabs.demos.DiningHouse
 import kotlinx.coroutines.CoroutineScope

@@ -1,4 +1,4 @@
-2834c08c1d9d2baadcd228fc24a776f121c832e0 2026-08-29
+ac85854a3e4497c86fdff83275ab14e0f298267a 2026-09-02
 AOSP path: androidx-main:a2ui
 source: github.com/androidx/androidx (androidx-main mirror)
-tree: 3a6283bf950e63ccbddf663bea6524bbd151f061
+tree: 3e6a793c0fe934f3abfbdc65297915c7f4a7dbdd

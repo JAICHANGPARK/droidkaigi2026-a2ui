@@ -1,24 +1,25 @@
 [versions]
-androidGradlePlugin = "9.1.1"
-androidxCore = "1.18.0"
-androidxLifecycle = "2.10.0"
+androidGradlePlugin = "9.3.2"
+androidxCore = "1.19.0"
+androidxLifecycle = "2.11.0"
 androidxActivity = "1.13.0"
-androidxComposeBom = "2026.06.01"
-# androidx.a2ui compiles against material3 1.5.0-alpha26: MaterialTheme.motionScheme, which
-# A2uiSurface animates with, is still internal in the 1.4.0 the BOM pins. One version for the
-# whole app so the renderer and the vendored library agree.
-composeMaterial3 = "1.5.0-alpha26"
+androidxComposeBom = "2026.08.00"
+# androidx.a2ui needs a material3 that exposes MaterialTheme.motionScheme, which A2uiSurface
+# animates with — it is still internal in the stable material3 the BOM pins. One version for
+# the whole app so the renderer and the vendored library agree. alpha27 is the newest on Maven
+# and still has no SliderState(trackRange = ...), so the slider pin in :androidx-a2ui stays.
+composeMaterial3 = "1.5.0-alpha27"
 androidxTest = "1.7.0"
 androidxTestExt = "1.3.0"
 androidxTestRunner = "1.7.0"
 androidxTestEspresso = "3.7.0"
 coil = "2.7.0"
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 junit = "4.13.2"
-media3 = "1.8.0"
-kotlin = "2.3.20"
-nav3Core = "1.0.1"
-lifecycleViewmodelNav3 = "2.10.0"
+media3 = "1.11.0"
+kotlin = "2.4.10"
+nav3Core = "1.1.7"
+lifecycleViewmodelNav3 = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
@@ -29,8 +30,8 @@ androidx-compose-ui = { group = "androidx.compose.ui", name = "ui"}
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime"}
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation"}
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation"}
-androidx-collection = { module = "androidx.collection:collection", version = "1.5.0" }
-androidx-annotation = { module = "androidx.annotation:annotation", version = "1.9.1" }
+androidx-collection = { module = "androidx.collection:collection", version = "1.6.0" }
+androidx-annotation = { module = "androidx.annotation:annotation", version = "1.10.0" }
 androidx-core = { module = "androidx.core:core", version.ref = "androidxCore" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview"}
@@ -50,7 +51,7 @@ androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core",
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.9.0" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.11.0" }
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }

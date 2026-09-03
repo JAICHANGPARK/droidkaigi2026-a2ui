@@ -1,6 +1,6 @@
 package com.example.a2uicomposelabs.agent
 
-import com.example.a2uicomposelabs.a2ui.A2uiCatalog
+import com.example.a2uicomposelabs.a2ui.model.A2uiCatalog
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

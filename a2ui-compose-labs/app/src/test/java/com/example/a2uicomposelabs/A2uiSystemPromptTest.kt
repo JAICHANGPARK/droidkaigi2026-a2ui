@@ -1,6 +1,6 @@
 package com.example.a2uicomposelabs
 
-import com.example.a2uicomposelabs.a2ui.BasicCatalogSchema
+import com.example.a2uicomposelabs.a2ui.model.BasicCatalogSchema
 import com.example.a2uicomposelabs.agent.A2uiToolCall
 import com.example.a2uicomposelabs.agent.a2uiSystemPrompt
 import org.junit.Assert.assertFalse

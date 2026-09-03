@@ -34,6 +34,8 @@ import org.junit.runners.JUnit4
 class MaterialA2uiBasicCatalogV1Test {
 
     private val fakeImageRenderer = A2uiImageRenderer { _, _, _, _, _ -> }
+    private val fakeVideoRenderer = A2uiVideoRenderer { _, _, _ -> }
+    private val fakeAudioPlayerRenderer = A2uiAudioPlayerRenderer { _, _, _, _ -> }
     private val fakeUrlOpener = A2uiUrlOpener { _ -> }
     private val fakeMessageFormatter = A2uiMessageFormatter { _, _, _ -> "" }
     private val fakeLocaleProvider = A2uiLocaleProvider { Locale.US }
@@ -41,9 +43,13 @@ class MaterialA2uiBasicCatalogV1Test {
     @Test
     fun factory_withDefaults_createsCatalogWithDefaultComponentsAndBasicFunctions() {
         val image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer)
+        val video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer)
+        val audioPlayer = MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer)
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = image,
+                video = video,
+                audioPlayer = audioPlayer,
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -58,6 +64,8 @@ class MaterialA2uiBasicCatalogV1Test {
         assertThat(catalog.components["Image"]).isSameInstanceAs(image)
         assertThat(catalog.components["Icon"])
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.icon)
+        assertThat(catalog.components["Video"]).isSameInstanceAs(video)
+        assertThat(catalog.components["AudioPlayer"]).isSameInstanceAs(audioPlayer)
         assertThat(catalog.components["Card"])
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.card)
         assertThat(catalog.components["Row"])
@@ -68,8 +76,14 @@ class MaterialA2uiBasicCatalogV1Test {
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.list)
         assertThat(catalog.components["Tabs"])
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.tabs)
+        assertThat(catalog.components["Divider"])
+            .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.divider)
         assertThat(catalog.components["Button"])
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.button)
+        assertThat(catalog.components["CheckBox"])
+            .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.checkBox)
+        assertThat(catalog.components["Slider"])
+            .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.slider)
         assertThat(catalog.components["DateTimeInput"])
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.dateTimeInput)
 
@@ -93,6 +107,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -119,6 +136,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -147,6 +167,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = customImage,
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -155,6 +178,59 @@ class MaterialA2uiBasicCatalogV1Test {
         assertThat(catalog.components["Image"]).isSameInstanceAs(customImage)
         assertThat(catalog.components["Image"])
             .isNotSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer))
+    }
+
+    @Test
+    fun factory_withCustomVideoComponent_overridesDefaultMaterialVideo() {
+        val customVideo =
+            object : A2uiBasicCatalogV1.Video {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(url: String, modifier: Modifier) {}
+            }
+
+        val catalog =
+            materialA2uiBasicCatalogV1(
+                image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = customVideo,
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
+                urlOpener = fakeUrlOpener,
+                messageFormatter = fakeMessageFormatter,
+                localeProvider = fakeLocaleProvider,
+            )
+
+        assertThat(catalog.components["Video"]).isSameInstanceAs(customVideo)
+        assertThat(catalog.components["Video"])
+            .isNotSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer))
+    }
+
+    @Test
+    fun factory_withCustomAudioPlayerComponent_overridesDefaultMaterialAudioPlayer() {
+        val customAudioPlayer =
+            object : A2uiBasicCatalogV1.AudioPlayer {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(
+                    url: String,
+                    description: String?,
+                    modifier: Modifier,
+                ) {}
+            }
+
+        val catalog =
+            materialA2uiBasicCatalogV1(
+                image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer = customAudioPlayer,
+                urlOpener = fakeUrlOpener,
+                messageFormatter = fakeMessageFormatter,
+                localeProvider = fakeLocaleProvider,
+            )
+
+        assertThat(catalog.components["AudioPlayer"]).isSameInstanceAs(customAudioPlayer)
+        assertThat(catalog.components["AudioPlayer"])
+            .isNotSameInstanceAs(
+                MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer)
+            )
     }
 
     @Test
@@ -168,6 +244,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -195,6 +274,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -222,6 +304,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -249,6 +334,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -274,6 +362,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -283,6 +374,34 @@ class MaterialA2uiBasicCatalogV1Test {
         assertThat(catalog.components["Tabs"]).isSameInstanceAs(customTabs)
         assertThat(catalog.components["Tabs"])
             .isNotSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.tabs)
+    }
+
+    @Test
+    fun factory_withCustomDividerComponent_overridesDefaultMaterialDivider() {
+        val customDivider =
+            object : A2uiBasicCatalogV1.Divider {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(
+                    axis: A2uiBasicCatalogV1.Divider.Axis,
+                    modifier: Modifier,
+                ) {}
+            }
+
+        val catalog =
+            materialA2uiBasicCatalogV1(
+                image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
+                urlOpener = fakeUrlOpener,
+                messageFormatter = fakeMessageFormatter,
+                localeProvider = fakeLocaleProvider,
+                divider = customDivider,
+            )
+
+        assertThat(catalog.components["Divider"]).isSameInstanceAs(customDivider)
+        assertThat(catalog.components["Divider"])
+            .isNotSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.divider)
     }
 
     @Test
@@ -301,6 +420,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -310,6 +432,70 @@ class MaterialA2uiBasicCatalogV1Test {
         assertThat(catalog.components["Button"]).isSameInstanceAs(customButton)
         assertThat(catalog.components["Button"])
             .isNotSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.button)
+    }
+
+    @Test
+    fun factory_withCustomCheckBoxComponent_overridesDefaultMaterialCheckBox() {
+        val customCheckBox =
+            object : A2uiBasicCatalogV1.CheckBox {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(
+                    label: String,
+                    value: Boolean,
+                    onValueChange: (Boolean) -> Unit,
+                    enabled: Boolean,
+                    modifier: Modifier,
+                ) {}
+            }
+
+        val catalog =
+            materialA2uiBasicCatalogV1(
+                image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
+                urlOpener = fakeUrlOpener,
+                messageFormatter = fakeMessageFormatter,
+                localeProvider = fakeLocaleProvider,
+                checkBox = customCheckBox,
+            )
+
+        assertThat(catalog.components["CheckBox"]).isSameInstanceAs(customCheckBox)
+        assertThat(catalog.components["CheckBox"])
+            .isNotSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.checkBox)
+    }
+
+    @Test
+    fun factory_withCustomSliderComponent_overridesDefaultMaterialSlider() {
+        val customSlider =
+            object : A2uiBasicCatalogV1.Slider {
+                @Composable
+                override fun A2uiComponentScope.TypedContent(
+                    label: String?,
+                    min: Float,
+                    max: Float,
+                    value: Float,
+                    onValueChange: (Float) -> Unit,
+                    enabled: Boolean,
+                    modifier: Modifier,
+                ) {}
+            }
+
+        val catalog =
+            materialA2uiBasicCatalogV1(
+                image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
+                urlOpener = fakeUrlOpener,
+                messageFormatter = fakeMessageFormatter,
+                localeProvider = fakeLocaleProvider,
+                slider = customSlider,
+            )
+
+        assertThat(catalog.components["Slider"]).isSameInstanceAs(customSlider)
+        assertThat(catalog.components["Slider"])
+            .isNotSameInstanceAs(MaterialA2uiBasicCatalogV1Defaults.slider)
     }
 
     @Test
@@ -332,6 +518,9 @@ class MaterialA2uiBasicCatalogV1Test {
         val catalog =
             materialA2uiBasicCatalogV1(
                 image = MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer),
+                video = MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer),
+                audioPlayer =
+                    MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer),
                 urlOpener = fakeUrlOpener,
                 messageFormatter = fakeMessageFormatter,
                 localeProvider = fakeLocaleProvider,
@@ -349,6 +538,10 @@ class MaterialA2uiBasicCatalogV1Test {
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Text)
         assertThat(MaterialA2uiBasicCatalogV1Defaults.image(fakeImageRenderer))
             .isInstanceOf(MaterialA2uiBasicCatalogV1Image::class.java)
+        assertThat(MaterialA2uiBasicCatalogV1Defaults.video(fakeVideoRenderer))
+            .isInstanceOf(MaterialA2uiBasicCatalogV1Video::class.java)
+        assertThat(MaterialA2uiBasicCatalogV1Defaults.audioPlayer(fakeAudioPlayerRenderer))
+            .isInstanceOf(MaterialA2uiBasicCatalogV1AudioPlayer::class.java)
         assertThat(MaterialA2uiBasicCatalogV1Defaults.icon)
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Icon)
         assertThat(MaterialA2uiBasicCatalogV1Defaults.card)
@@ -361,8 +554,14 @@ class MaterialA2uiBasicCatalogV1Test {
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1List)
         assertThat(MaterialA2uiBasicCatalogV1Defaults.tabs)
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Tabs)
+        assertThat(MaterialA2uiBasicCatalogV1Defaults.divider)
+            .isSameInstanceAs(MaterialA2uiBasicCatalogV1Divider)
         assertThat(MaterialA2uiBasicCatalogV1Defaults.button)
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1Button)
+        assertThat(MaterialA2uiBasicCatalogV1Defaults.checkBox)
+            .isSameInstanceAs(MaterialA2uiBasicCatalogV1CheckBox)
+        assertThat(MaterialA2uiBasicCatalogV1Defaults.slider)
+            .isSameInstanceAs(MaterialA2uiBasicCatalogV1Slider)
         assertThat(MaterialA2uiBasicCatalogV1Defaults.dateTimeInput)
             .isSameInstanceAs(MaterialA2uiBasicCatalogV1DateTimeInput)
     }

@@ -4,7 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.a2uicomposelabs.a2ui.A2uiRejection
+import com.example.a2uicomposelabs.a2ui.runtime.A2uiRejection
 
 /**
  * What the renderer refused on this turn, and what happened next.

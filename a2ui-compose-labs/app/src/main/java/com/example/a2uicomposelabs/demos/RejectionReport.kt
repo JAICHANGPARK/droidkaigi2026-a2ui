@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import com.example.a2uicomposelabs.a2ui.A2uiRejection
+import com.example.a2uicomposelabs.a2ui.runtime.A2uiRejection
 
 /**
  * Shows what the renderer refused, with the offending payload one tap away from the

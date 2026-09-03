@@ -1,7 +1,7 @@
 package com.example.a2uicomposelabs.demos
 
-import com.example.a2uicomposelabs.a2ui.A2uiAction
-import com.example.a2uicomposelabs.a2ui.SurfaceState
+import com.example.a2uicomposelabs.a2ui.model.A2uiAction
+import com.example.a2uicomposelabs.a2ui.runtime.SurfaceState
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
